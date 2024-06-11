@@ -8,180 +8,165 @@ import MyNavbar from "./Navbar";
 import API from "../API";
 import dayjs from "dayjs";
 
-function ImageComponent({ memeImage, error, round }) {
+function ImageComponent(props) {
   return (
-    <div>
-      <h1>ROUND NUMERO {round}</h1>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {memeImage ? (
-        <img src={memeImage.url} alt="Meme" style={{ width: '500px', height: '500px', objectFit: 'cover' }} />
-      ) : (
-        <p>Caricamento...</p>
-      )}
-    </div>
+    <>
+      <div>
+        <h1> ROUND NUMERO {props.round}</h1>
+        {props.error && <p style={{ color: 'red' }}>{props.error}</p>}
+        {props.memeImage ? (
+          <img src={props.memeImage.url} alt="Meme" style={{ width: '500px', height: '500px', objectFit: 'cover' }} />
+        ) : (
+          <p> Caricamento...</p>
+        )}
+      </div>
+    </>
   );
 }
 
-function InfoComponent({ score, choices, handleRetry }) {
+function InfoComponent(props) {
   return (
     <div style={{ textAlign: 'center', marginTop: '20px' }}>
-      <h1>Punteggio: {score}</h1>
+      {<h1>Punteggio: {props.score}</h1>}
       <h2>Scelte fatte:</h2>
       <ListGroup style={{ marginBottom: '20px' }}>
-        {choices.map((choice, index) => (
+        {props.choices.map((choice, index) => (
           <ListGroupItem key={index}>
             <strong>Round {index + 1}:</strong> {choice}
           </ListGroupItem>
         ))}
       </ListGroup>
-      <Button variant="primary" onClick={handleRetry}>
+      <Button variant="primary" onClick={props.handleRetry}>
         Riprova
       </Button>
     </div>
   );
 }
 
-function MessageComponent({
-  round,
-  setTimeLeft,
-  setEndRound,
-  setRound,
-  choices,
-  setChoices,
-  setGameOver,
-  endRound,
-  setScore,
-  score,
-  memeImage,
-  captions,
-  error,
-  exitGame,
-  handleSaveGame,
-}) {
+function MessageComponent(props) {
   const context = useContext(AppContext);
   const loginState = context.loginState;
-  
   const handleNextTurn = () => {
-    setTimeLeft(30); // Reset the timer for the next turn
-    setEndRound(false);
-    if (loginState.loggedIn) {
-      if (round < 3) {
-        setRound(round + 1);
+    props.setTimeLeft(30); // Reset the timer for the next turn
+    props.setEndRound(false);
+    if (loginState.loggedIn == true) {
+      if (props.round < 3) {
+        props.setRound(props.round + 1);
       } else {
-        handleSaveGame();
+        props.handleSaveGame()
       }
-    } else {
-      setGameOver(true);
+    }
+    else {
+      props.setGameOver(true);
     }
   };
 
-  let previousText = "";
-  const correctAnswers = captions.filter(caption => caption.isCorrect);
-
-  if (choices.length > 0) {
-    const lastChoice = choices[choices.length - 1];
-    const lastCaption = captions.find(caption => caption.id === lastChoice);
-    if (lastCaption) {
-      previousText = lastCaption.text;
-      if (lastCaption.isCorrect) {
-        console.log("Correct choice");
-        setScore(score + 5);
-      }
+  let previoustext = "";
+  let correct_answer = [];
+ 
+  for (let i = 0; i < props.captions.length; i++) {
+    if (props.captions[i].id == props.choices[props.choices.length - 1]) {
+      previoustext = props.captions[i].text;
+      break;
     }
   }
 
+  // Populate correct_answer array
+  
+  correct_answer = props.captions.filter((caption) => caption.isCorrect);
+
   return (
     <>
-      <ImageComponent memeImage={memeImage} error={error} round={round} />
+      <ImageComponent memeImage={props.memeImage} error={props.error} round={props.round} />
       <div>
-        <h1>Punteggio corrente: {score}</h1>
-        <h2>Scelta fatta in questo turno: {previousText || "Didascalia non scelta"}</h2>
+        <h1>Punteggio corrente {props.score}</h1>
+        <h2>Scelta fatta in questo turno: </h2>
+        <h2>{previoustext!="" ? previoustext : "Didascalia non scelta"}</h2>
         <ListGroup className="custom-list-group">
-          {correctAnswers.map((answer, index) => (
+          {correct_answer.map((answer, index) => (
             <ListGroupItem key={index} className="custom-list-group-item">
               <strong>Risposta corretta:</strong> {answer.text}
             </ListGroupItem>
           ))}
         </ListGroup>
-        <Button variant="primary" onClick={handleNextTurn}>
-          {loginState.loggedIn ? "Prossimo turno" : "Riepilogo"}
-        </Button>
-        <Button variant="danger" onClick={exitGame}>
-          {loginState.loggedIn ? "Abbandona partita" : "Home"}
-        </Button>
+        <Button variant="primary" onClick={handleNextTurn}>{loginState.loggedIn === true ? "Prossimo turno" : "Riepilogo "}</Button>
+        <Button variant="danger" onClick={props.exitGame}>{loginState.loggedIn === true ? "Abbandona partita" : "Home "}</Button>
       </div>
     </>
   );
 }
 
-function CaptionComponentForm({
-  captions,
-  setSelectedCaption,
-  selectedCaption,
-  round,
-  setRound,
-  setChoices,
-  choices,
-  setEndRound,
-  setGameOver,
-  timeLeft,
-  setTimeLeft,
-  exitGame,
-  handleSaveGame,
-}) {
+
+function CaptionComponentForm(props) {
   useEffect(() => {
-    if (captions.length > 0) {
-      setSelectedCaption(captions[0].id);
+    if (props.captions.length > 0) {
+      props.setSelectedCaption(props.captions[0].id);
     }
-  }, [captions, setSelectedCaption]);
+  }, [props.captions]);
 
-  const handleCaptionChange = event => {
-    setSelectedCaption(event.target.value);
+  const handleCaptionChange = (event) => {
+    props.setSelectedCaption(event.target.value);
   };
-
-  const handleSubmit = event => {
+  
+  const handleSubmit = (event) => {
     event.preventDefault();
-    if (selectedCaption !== -1) {
-      setChoices([...choices, selectedCaption]);
+    // i need to check if the answer is correct
+    if (props.selectedCaption != -1) {
+      for (let i = 0; i < props.captions.length; i++) {
+        console.log(props.captions[i].id);
+        if (props.captions[i].id == props.selectedCaption) {
+          if (props.captions[i].isCorrect) {
+            props.setScore(props.score + 5);
+          }
+          break;
+        }
+      }
     }
-    if (round < 3) {
-      setEndRound(true);
+    if (props.round < 3) {
+      if (props.selectedCaption != -1) {
+        props.setChoices([...props.choices, props.selectedCaption]);
+      }
+      props.setEndRound(true);
     } else {
-      handleSaveGame();
-      setGameOver(true);
+      if (props.selectedCaption != -1) {
+        props.setChoices([...props.choices, props.selectedCaption]);
+      }
+      props.handleSaveGame();
+      props.setGameOver(true);
     }
+
   };
 
   useEffect(() => {
-    if (timeLeft === 0) {
-      if (round < 3) {
-        setEndRound(true);
+    if (props.timeLeft === 0) {
+      if (props.round < 3) {
+        props.setEndRound(true);
       } else {
-        setGameOver(true);
+        props.setGameOver(true);
       }
-    } else {
-      const intervalId = setInterval(() => {
-        setTimeLeft(timeLeft - 1);
-      }, 1000);
-      return () => clearInterval(intervalId);
+      return;
     }
-  }, [timeLeft, setEndRound, setGameOver, round]);
+
+    const intervalId = setInterval(() => {
+      props.setTimeLeft(props.timeLeft - 1);
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [props.timeLeft]);
 
   return (
     <>
-      <div className="countdown-timer">Tempo rimanente: {timeLeft} secondi</div>
+      <div className="countdown-timer">Tempo rimanente: {props.timeLeft} secondi</div>
       <Card className="card-custom">
         <Card.Header className="card-header-custom">
-          <Card.Subtitle className="card-subtitle-custom">
-            Seleziona la Didascalia che si adatta meglio a questo meme
-          </Card.Subtitle>
+          <Card.Subtitle className="card-subtitle-custom">Seleziona la Didascalia che si adatta meglio a questo meme</Card.Subtitle>
         </Card.Header>
         <Card.Body>
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formCaption" className="form-group-custom">
               <Form.Control as="select" onChange={handleCaptionChange}>
-                <option value="-1">Seleziona una possibile didascalia</option>
-                {captions.map((caption, index) => (
+                <option value="-1">Seleziona una possibile didascalia </option>
+                {props.captions.map((caption, index) => (
                   <option key={index} value={caption.id}>
                     {caption.text}
                   </option>
@@ -191,7 +176,7 @@ function CaptionComponentForm({
             <Button variant="primary" className="button-custom" type="submit">
               Conferma
             </Button>
-            <Button variant="danger" onClick={exitGame}>
+            <Button variant="danger" onClick={props.exitGame}>
               Abbandona Partita
             </Button>
           </Form>
@@ -217,6 +202,7 @@ function MemeComponent() {
   const context = useContext(AppContext);
   const loginState = context.loginState;
 
+
   const navigate = useNavigate();
 
   const handleRetry = () => {
@@ -228,26 +214,25 @@ function MemeComponent() {
     setEndRound(false);
     setTimeLeft(30);
   };
-
   const exitGame = () => {
     navigate("/");
-  };
-
+  }
   const handleSaveGame = async () => {
     const creationDate = dayjs().format('YYYY-MM-DD');
-    const response = await API.saveGame(score, creationDate);
-    if (response.ok) {
-      setGameOver(true);
-    }
+    API.saveGame(score, creationDate).then((response) => {
+      if (response.ok) {
+        setGameOver(true);
+      }
+    });
   };
 
   useEffect(() => {
     const fetchMemeImage = async () => {
       try {
-        //context.loadingState.updateLoading(true);
         let image = null;
         let isMemePresent = true;
         while (isMemePresent) {
+          console.log(listmeme)
           image = await API.getMemeImage();
           if (!listmeme.includes(image.url)) {
             isMemePresent = false;
@@ -255,14 +240,14 @@ function MemeComponent() {
         }
         setMemeImage(image);
         setListMeme(prevListMeme => [...prevListMeme, image.url]);
-        //context.loadingState.updateLoading(false);
+
         const captions = await API.getCaptions(image.id);
         setCaptions(captions);
       } catch (err) {
         setError(err.error || 'Unknown error');
       }
     };
-  
+
     if (round > 1 || memeImage === null) {
       fetchMemeImage();
     }
@@ -276,17 +261,20 @@ function MemeComponent() {
           <CaptionComponentForm
             captions={captions}
             selectedCaption={selectedCaption}
+            endRound={endRound}
+            setEndRound={setEndRound}
             setSelectedCaption={setSelectedCaption}
             round={round}
             setRound={setRound}
             setChoices={setChoices}
             choices={choices}
-            setEndRound={setEndRound}
             setGameOver={setGameOver}
             timeLeft={timeLeft}
             setTimeLeft={setTimeLeft}
             exitGame={exitGame}
             handleSaveGame={handleSaveGame}
+            setScore={setScore}
+            score={score}
           />
         </>
       );
@@ -296,8 +284,8 @@ function MemeComponent() {
           round={round}
           setTimeLeft={setTimeLeft}
           setRound={setRound}
-          choices={choices}
           setChoices={setChoices}
+          choices={choices}
           setGameOver={setGameOver}
           endRound={endRound}
           setScore={setScore}
@@ -313,7 +301,7 @@ function MemeComponent() {
     }
   } else {
     return (
-      <InfoComponent score={score} handleRetry={handleRetry} error={error} round={round} choices={choices} />
+      <InfoComponent score={score}handleRetry={handleRetry} error={error} round={round} choices={choices} />
     );
   }
 }
