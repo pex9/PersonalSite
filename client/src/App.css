@@ -1,30 +1,6 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -38,5 +14,53 @@
 }
 
 .read-the-docs {
-  color: #888;
+  color: #7c7b7b;
+}
+.navbar-title {
+  color: white;
+  text-align: center;
+  flex: 1;
+}
+.card-custom {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  border-radius: 10px; 
+}
+.form-group-custom {
+  margin-bottom: 20px; /* Add space below form group */
+}
+.countdown-timer {
+  text-align: center; /* Center the text */
+  font-size: 24px; /* Increase the font size */
+  font-weight: bold; /* Make the text bold */
+  margin-bottom: 20px; /* Add some space below the timer */
+  color: #ff0000; /* Change color to red to make it stand out */
+}
+.card-custom:hover {
+  transform: translateY(-5px); /* Lift the card slightly on hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Intensify the shadow on hover */
+}
+
+.card-header-custom {
+  background-color: #007bff; /* Bootstrap primary color */
+  color: white; /* White text color */
+  padding: 10px 20px; /* Add padding */
+  border-top-left-radius: 10px; /* Rounded top left corner */
+  border-top-right-radius: 10px; /* Rounded top right corner */
+}
+
+.card-subtitle-custom {
+  font-size: 16px; /* Adjust subtitle font size */
+  font-weight: 500; /* Make subtitle text semi-bold */
+}
+.custom-list-group {
+  width: 400px; /* Riduce la larghezza della lista */
+  margin: 0 auto; /* Centra la lista */
+  font-size: 0.9em; /* Riduce la dimensione del testo */
+}
+
+.custom-list-group-item {
+  padding: 10px; /* Riduce il padding */
 }
