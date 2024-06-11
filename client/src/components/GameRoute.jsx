@@ -1,7 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Container, Spinner, Form, Button, Card, ListGroup, ListGroupItem } from "react-bootstrap";
-import MyMain from "./Main";
 import AppContext from "../AppContext";
 import ErrorView from "./Error";
 import MyNavbar from "./Navbar";
@@ -27,7 +26,7 @@ function ImageComponent(props) {
 function InfoComponent(props) {
   return (
     <div style={{ textAlign: 'center', marginTop: '20px' }}>
-      {<h1>Punteggio: {props.score}</h1>}
+      {<h1>Punteggio Totale della partita : {props.score}</h1>}
       <h2>Scelte fatte:</h2>
       <ListGroup style={{ marginBottom: '20px' }}>
         {props.choices.map((choice, index) => (
@@ -54,6 +53,7 @@ function MessageComponent(props) {
         props.setRound(props.round + 1);
       } else {
         props.handleSaveGame()
+        props.setGameOver(true);
       }
     }
     else {
@@ -79,6 +79,7 @@ function MessageComponent(props) {
     <>
       <ImageComponent memeImage={props.memeImage} error={props.error} round={props.round} />
       <div>
+        <h2>{props.correct ? 'Risposta corretta' : 'Risposta sbagliata'}</h2>
         <h1>Punteggio corrente {props.score}</h1>
         <h2>Scelta fatta in questo turno: </h2>
         <h2>{previoustext!="" ? previoustext : "Didascalia non scelta"}</h2>
@@ -117,12 +118,13 @@ function CaptionComponentForm(props) {
         if (props.captions[i].id == props.selectedCaption) {
           if (props.captions[i].isCorrect) {
             props.setScore(props.score + 5);
+            props.setAnswer(true);
           }
           break;
         }
       }
     }
-    if (props.round < 3) {
+    if (props.round <= 3) {
       if (props.selectedCaption != -1) {
         props.setChoices([...props.choices, props.selectedCaption]);
       }
@@ -139,7 +141,7 @@ function CaptionComponentForm(props) {
 
   useEffect(() => {
     if (props.timeLeft === 0) {
-      if (props.round < 3) {
+      if (props.round <= 3) {
         props.setEndRound(true);
       } else {
         props.setGameOver(true);
@@ -195,6 +197,7 @@ function MemeComponent() {
   const [selectedCaption, setSelectedCaption] = useState(null);
   const [choices, setChoices] = useState([]);
   const [score, setScore] = useState(0);
+  const [answer, setAnswer] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [endRound, setEndRound] = useState(false);
   const [timeLeft, setTimeLeft] = useState(30);
@@ -275,6 +278,7 @@ function MemeComponent() {
             handleSaveGame={handleSaveGame}
             setScore={setScore}
             score={score}
+            setAnswer={setAnswer}
           />
         </>
       );
@@ -296,12 +300,13 @@ function MemeComponent() {
           error={error}
           exitGame={exitGame}
           handleSaveGame={handleSaveGame}
+          answer={answer}
         />
       );
     }
   } else {
     return (
-      <InfoComponent score={score}handleRetry={handleRetry} error={error} round={round} choices={choices} />
+      <InfoComponent listmeme={listmeme} score={score} handleRetry={handleRetry} error={error} round={round} choices={choices} />
     );
   }
 }
