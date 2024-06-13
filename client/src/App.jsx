@@ -40,9 +40,6 @@ function App() {
       } catch (err) {
         // NO need to do anything: user is simply not yet authenticated
       }
-      finally {
-        //setLoading(false);
-      }
     }
     checkAuth();
   }, []);

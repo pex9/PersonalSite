@@ -10,7 +10,7 @@ function SiteIcon(props) {
   );
 }
 
-function MyNavbar(props) {
+function MyNavbar() {
   const navigate = useNavigate();
   const context = useContext(AppContext);
   const loginState = context.loginState;

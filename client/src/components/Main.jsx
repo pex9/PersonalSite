@@ -5,8 +5,9 @@ import AppContext from '../AppContext';
 
 function Description({ startGame }) {
     return (
-        <div style={{ padding: '20px', textAlign: 'center' }}>
+        <Row>
             <h1>Benvenuto al Gioco del Meme</h1>
+            <Col>
             <p>
                 Il giocatore riceve un’immagine di un meme casuale e sette possibili didascalie per quel meme in ordine casuale.
                 Sia l’immagine del meme che le didascalie devono essere generate dal server. Tra le sette didascalie, due di esse
@@ -19,7 +20,8 @@ function Description({ startGame }) {
             <Button onClick={startGame} style={{ padding: '10px 20px', fontSize: '16px', cursor: 'pointer', backgroundColor: 'red' }}>
                 INIZIA GIOCO
             </Button>
-        </div>
+            </Col>
+        </Row>
     );
 }
 

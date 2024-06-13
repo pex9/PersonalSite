@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import { Container, Spinner, Form, Button, Card, ListGroup, ListGroupItem } from "react-bootstrap";
+import { Col, Container, Spinner, Form, Button, Card, ListGroup, ListGroupItem, Row } from "react-bootstrap";
+
 import AppContext from "../AppContext";
 import ErrorView from "./Error";
 import MyNavbar from "./Navbar";
@@ -23,22 +24,55 @@ function ImageComponent(props) {
   );
 }
 
+function RowMemeComponent(props) {
+  const { imageurl, round, answers } = props;
+
+  // Verifica se answers è un array prima di mapparlo
+  const renderedAnswers = Array.isArray(answers) ? (
+    answers.map((item, index) => (
+      <ListGroup.Item key={index}>{item.text}</ListGroup.Item>
+    ))
+  ) : (
+    <ListGroup.Item>Nessuna risposta disponibile</ListGroup.Item>
+  );
+
+  return (
+    <Card>
+      <Row>
+        <Col md={3}>
+          <Card.Img src={imageurl} />
+          <Card.Body>
+            <Card.Title>ROUND NUMERO {round}</Card.Title>
+          </Card.Body>
+        </Col>
+        <Col md={9}>
+          <ListGroup>
+            {renderedAnswers}
+          </ListGroup>
+        </Col>
+      </Row>
+    </Card>
+  );
+}
+
 function InfoComponent(props) {
   return (
-    <div style={{ textAlign: 'center', marginTop: '20px' }}>
-      {<h1>Punteggio Totale della partita : {props.score}</h1>}
-      <h2>Scelte fatte:</h2>
-      <ListGroup style={{ marginBottom: '20px' }}>
-        {props.choices.map((choice, index) => (
-          <ListGroupItem key={index}>
-            <strong>Round {index + 1}:</strong> {choice}
-          </ListGroupItem>
-        ))}
-      </ListGroup>
+    <Container>
+      <Row>
+        <h1>Punteggio Totale della partita: {props.score}</h1>
+      </Row>
+      <Row>
+        <h2>Scelte fatte:</h2>
+      </Row>
+      {props.listmeme.map((memeurl, index) => (
+        <Row key={index} style={{ padding: '1rem' }}>
+            <RowMemeComponent answers={props.answers[index+1]} key={index} imageurl={memeurl} round={index + 1} />
+        </Row>
+      ))}
       <Button variant="primary" onClick={props.handleRetry}>
         Riprova
       </Button>
-    </div>
+    </Container>
   );
 }
 
@@ -63,7 +97,7 @@ function MessageComponent(props) {
 
   let previoustext = "";
   let correct_answer = [];
- 
+
   for (let i = 0; i < props.captions.length; i++) {
     if (props.captions[i].id == props.choices[props.choices.length - 1]) {
       previoustext = props.captions[i].text;
@@ -72,17 +106,17 @@ function MessageComponent(props) {
   }
 
   // Populate correct_answer array
-  
+
   correct_answer = props.captions.filter((caption) => caption.isCorrect);
 
   return (
     <>
-      <ImageComponent memeImage={props.memeImage} error={props.error} round={props.round} />
-      <div>
+      <Container>
+        <ImageComponent memeImage={props.memeImage} error={props.error} round={props.round} />
         <h2>{props.correct ? 'Risposta corretta' : 'Risposta sbagliata'}</h2>
         <h1>Punteggio corrente {props.score}</h1>
         <h2>Scelta fatta in questo turno: </h2>
-        <h2>{previoustext!="" ? previoustext : "Didascalia non scelta"}</h2>
+        <h2>{previoustext != "" ? previoustext : "Didascalia non scelta"}</h2>
         <ListGroup className="custom-list-group">
           {correct_answer.map((answer, index) => (
             <ListGroupItem key={index} className="custom-list-group-item">
@@ -92,7 +126,7 @@ function MessageComponent(props) {
         </ListGroup>
         <Button variant="primary" onClick={handleNextTurn}>{loginState.loggedIn === true ? "Prossimo turno" : "Riepilogo "}</Button>
         <Button variant="danger" onClick={props.exitGame}>{loginState.loggedIn === true ? "Abbandona partita" : "Home "}</Button>
-      </div>
+      </Container>
     </>
   );
 }
@@ -108,7 +142,7 @@ function CaptionComponentForm(props) {
   const handleCaptionChange = (event) => {
     props.setSelectedCaption(event.target.value);
   };
-  
+
   const handleSubmit = (event) => {
     event.preventDefault();
     // i need to check if the answer is correct
@@ -124,7 +158,7 @@ function CaptionComponentForm(props) {
         }
       }
     }
-    if (props.round <= 3) {
+    if (props.round < 3) {
       if (props.selectedCaption != -1) {
         props.setChoices([...props.choices, props.selectedCaption]);
       }
@@ -202,6 +236,8 @@ function MemeComponent() {
   const [endRound, setEndRound] = useState(false);
   const [timeLeft, setTimeLeft] = useState(30);
 
+  let [answers, setAnswers] = useState({});
+
   const context = useContext(AppContext);
   const loginState = context.loginState;
 
@@ -234,27 +270,35 @@ function MemeComponent() {
       try {
         let image = null;
         let isMemePresent = true;
-        while (isMemePresent) {
-          console.log(listmeme)
-          image = await API.getMemeImage();
-          if (!listmeme.includes(image.url)) {
-            isMemePresent = false;
+        
+        // Controlla che il turno sia <= 3 e l'utente sia loggato, o turno 1 e utente non loggato
+        if ((round <= 3 && loginState.loggedIn) || (round === 1 && !loginState.loggedIn)) {
+          while (isMemePresent) {
+            image = await API.getMemeImage();
+            console.log("ho fetachato un immagine")
+            console.log(image.url)
+            if (!listmeme.includes(image.url)) {
+              isMemePresent = false;
+            }
           }
+          
+          setMemeImage(image);
+          setListMeme(prevListMeme => [...prevListMeme, image.url]);
+  
+          const captions = await API.getCaptions(image.id);
+          setCaptions(captions);
+          setAnswers(prevAnswers => ({
+            ...prevAnswers,
+            [round]: captions
+          }));
         }
-        setMemeImage(image);
-        setListMeme(prevListMeme => [...prevListMeme, image.url]);
-
-        const captions = await API.getCaptions(image.id);
-        setCaptions(captions);
       } catch (err) {
         setError(err.error || 'Unknown error');
       }
     };
-
-    if (round > 1 || memeImage === null) {
-      fetchMemeImage();
-    }
-  }, [round]);
+  
+     fetchMemeImage();
+  }, [score]);
 
   if (!gameOver) {
     if (!endRound) {
@@ -306,7 +350,7 @@ function MemeComponent() {
     }
   } else {
     return (
-      <InfoComponent listmeme={listmeme} score={score} handleRetry={handleRetry} error={error} round={round} choices={choices} />
+      <InfoComponent answers={answers} listmeme={listmeme} score={score} handleRetry={handleRetry} error={error} round={round} choices={choices} />
     );
   }
 }
@@ -328,7 +372,7 @@ function GameRoute(props) {
             </Container>
           ) : (
             <>
-              <MyNavbar type={props.type} />
+              <MyNavbar />
               <MemeComponent />
             </>
           )}
