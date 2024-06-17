@@ -3,7 +3,7 @@ import { Container, Spinner } from "react-bootstrap";
 import MyMain from "./Main";
 import AppContext from "../AppContext";
 import ErrorView from "./Error";
-import MyNavbar from "./Navbar";
+import MyNavbar from './MyNavbar';
 
 function HomeRoute(props) {
     const context = useContext(AppContext);

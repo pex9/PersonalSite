@@ -9,6 +9,7 @@ import DefaultRoute from './components/DefaultRoute';
 import HomeRoute from './components/HomeRoute';
 import HistoryRoute from './components/HistoryRoute';
 import GameRoute from './components/GameRoute';
+import ViewGameRoute from './components/ViewGameRoute';
 import API from './API';
 function App() {
 
@@ -43,7 +44,8 @@ function App() {
     }
     checkAuth();
   }, []);
-
+  
+ 
   function loginSuccessful(user) {
     setUser(user);
     setLoggedIn(true);
@@ -81,11 +83,12 @@ function App() {
       }}
       >
         <Routes>
+          <Route path='/game' element={<GameRoute />} />
+          <Route path='/viewgame/:gameid' element={<ViewGameRoute />} />
           <Route path='/login' element={<LoginRoute />} />
           <Route path='/' element={<HomeRoute />} />
           <Route path='/*' element={<DefaultRoute />} />
           <Route path='/history' element={<HistoryRoute />} />
-          <Route path='/game' element={<GameRoute />} />
         </Routes>
       </AppContext.Provider>
     </BrowserRouter>

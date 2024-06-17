@@ -8,17 +8,17 @@ const db = new sqlite.Database('db.db', (err) => {
 });
 
 
-exports.getImage = () => {
+exports.getImages = () => {
   return new Promise((resolve, reject) => {
-    const query = 'SELECT * FROM meme ORDER BY RANDOM() LIMIT 1';
-    
-    db.get(query, [], (err, row) => {
+    const query = 'SELECT * FROM meme ORDER BY RANDOM()';
+    db.all(query, [], (err, rows) => {
       if (err) {
         reject(err);
-      } else if (row == undefined) {
+      } else if (rows.length === 0) {
         resolve({ error: 'No meme found.' });
       } else {
-        resolve({ id: row.id, url: row.image_url });
+        const memes = rows.map(row => ({ id: row.id, url: row.image_url }));
+        resolve(memes);
       }
     });
   });
@@ -54,10 +54,10 @@ exports.getCaptions = (memeid) => {
     });
   });
 };
-exports.saveGame = (userId, score,date) => {
+exports.saveGame = (userId, score,date,listmeme) => {
   return new Promise((resolve, reject) => {
-    const query = 'INSERT INTO partite (user_id, score,created_at) VALUES (?, ?,?)';
-    db.run(query, [userId, score,date], function(err) {
+    const query = 'INSERT INTO partite (user_id, score,created_at,listmeme) VALUES (?, ?, ?, ?)';
+    db.run(query, [userId, score,date,listmeme], function(err) {
       if (err) {
         reject(err);
       } else {
@@ -74,6 +74,20 @@ exports.getGames = (userId) => {
         reject(err);
       } else {
         resolve(rows);
+      }
+    });
+  });
+};
+
+exports.getGame = (gameId, userId) => {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM partite WHERE id = ? AND user_id = ?';
+    console.log(query);
+    db.get(query, [gameId, userId], (err, row) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(row);
       }
     });
   });

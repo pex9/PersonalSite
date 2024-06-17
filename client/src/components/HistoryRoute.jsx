@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { Container, Spinner } from "react-bootstrap";
+import React, { useEffect, useState, useContext} from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Container, Spinner,Button } from "react-bootstrap";
 import Table from 'react-bootstrap/Table';
 import AppContext from "../AppContext";
 import ErrorView from "./Error";
@@ -12,7 +13,7 @@ function MyHistoryTable(props) {
 
   const listgamesstate = props.history;
   const sortedgames = [...listgamesstate];
-  
+  const navigate = useNavigate();
   if (sort === 'asc') {
     sortedgames.sort((e1, e2) => {
       if (!e1.created_at) return -1;
@@ -42,6 +43,7 @@ function MyHistoryTable(props) {
               )}
             </th>
             <th>Score</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody className="text-center">
@@ -49,6 +51,13 @@ function MyHistoryTable(props) {
             <tr key={game.id}>
               <td>{dayjs(game.created_at).format('MMMM D, YYYY')}</td>
               <td>{game.score}</td>
+              <td>
+                <Button variant='primary' className='rounded-circle' onClick={() => { 
+                  navigate(`/viewgame/${game.id}`); 
+                }}>
+                  <i className="bi bi-eye" />
+                </Button>
+              </td>
             </tr>
           ))}
         </tbody>

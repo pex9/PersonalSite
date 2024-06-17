@@ -38,11 +38,6 @@
   margin-bottom: 20px; /* Add some space below the timer */
   color: #ff0000; /* Change color to red to make it stand out */
 }
-.card-custom:hover {
-  transform: translateY(-5px); /* Lift the card slightly on hover */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Intensify the shadow on hover */
-}
-
 .card-header-custom {
   background-color: #007bff; /* Bootstrap primary color */
   color: white; /* White text color */
@@ -63,4 +58,12 @@
 
 .custom-list-group-item {
   padding: 10px; /* Riduce il padding */
+}
+
+.correct {
+  color: green;
+}
+
+.incorrect {
+  color: red;
 }

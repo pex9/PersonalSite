@@ -56,3 +56,13 @@ select * from didascalie;
 SELECT * FROM didascalie WHERE meme_id = 2 ORDER BY RANDOM() LIMIT 2
 
 select * from partite
+
+ALTER TABLE partite ADD COLUMN listmeme TEXT;
+
+delete from imm;
+
+select * from meme
+
+update meme set image_url = 'meme10.jpg' where id = 10;
+
+delete from partite

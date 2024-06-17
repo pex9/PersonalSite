@@ -21,7 +21,7 @@ function DefaultRoute() {
                             <Row className="my-2 text-center">
                                 <Col>
                                     <Button className='rounded-pill' variant="dark" onClick={() => {
-                                            loadingState.updateLoading(true);
+                                            //loadingState.updateLoading(true);
                                             navigate('/');
                                         }}>
                                         Home

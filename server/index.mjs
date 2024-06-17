@@ -57,7 +57,12 @@ app.use(cors(corsOptions));
 app.use(session({
   secret: 'wge8d239bwd93rkskb',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    secure: false, // set to true if using HTTPS
+    httpOnly: true,
+    sameSite: 'lax' // set the sameSite attribute correctly
+  }
 }));
 
 // then, init passport
@@ -116,20 +121,23 @@ app.get('/api/sessions/current', (req, res) => {
 /*** Images and captions APIs ***/
 
 // GET /api/images
-app.get('/api/image', async (req, res) => {
-  dao.getImage()
-    .then(image => res.json(image))
+app.get('/api/images', async (req, res) => {
+  dao.getImages()
+    .then(images => res.json(images))
     .catch(() => res.status(500).end());
 });
+
 app.get('/api/captions/:memeid', async (req, res) => {
   dao.getCaptions(req.params.memeid).
     then(captions => res.json(captions))
     .catch(() => res.status(500).end());
 });
+
 app.post('/api/savegame', isLoggedIn, async (req, res) => {
   const score = req.body.score;
   const date = req.body.date;
-  dao.saveGame(req.user.id, score, date)
+  const listmeme = req.body.listmeme;
+  dao.saveGame(req.user.id, score, date,listmeme)
     .then(game => res.json(null))
     .catch(() => res.status(500).end());
 });
@@ -137,6 +145,12 @@ app.post('/api/savegame', isLoggedIn, async (req, res) => {
 app.get('/api/games', isLoggedIn,async (req, res) => {
   dao.getGames(req.user.id)
     .then(games => res.json(games))
+    .catch(() => res.status(500).end());
+});
+
+app.get('/api/games/:id', isLoggedIn, (req, res) => { 
+  dao.getGame(req.params.id, req.user.id)
+    .then(game => res.json(game))
     .catch(() => res.status(500).end());
 });
 

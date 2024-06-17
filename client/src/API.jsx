@@ -65,15 +65,15 @@ function getUsers() {
   }
 
 
-  function getMemeImage() {
+  function getMemeImages() {
     // call GET /api/images
     return new Promise((resolve, reject) => {
-      fetch(URL + '/image', {
+      fetch(URL + '/images', {
       })
       .then(response => {
           if(response.ok){
               response.json()
-              .then(image => { resolve(image); });
+              .then(images => { resolve(images); });
           } else {
               // analyze the cause of error
               response.json()
@@ -101,7 +101,7 @@ function getUsers() {
     });
   }
   //funzione salvataggio partita solo accessibile da utenti loggati
-  function saveGame(score, date) {
+  function saveGame(score, date,listmeme) {
     // TO DO FIX THIS
     return new Promise((resolve, reject) => {
       fetch(URL + '/savegame', {
@@ -110,7 +110,7 @@ function getUsers() {
             'Content-Type': 'Application/json'
         },
         credentials: 'include',
-        body: JSON.stringify({ score: score, date: date }), // Stringify the entire object
+        body: JSON.stringify({ score: score, date: date,listmeme: listmeme }), // Stringify the entire object
       })
         .then(response => {
           if (response.ok) {
@@ -148,8 +148,26 @@ function getGames() {
       }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); // connection errors
     });
   }
-
+function getGame(gameId) {
+    return new Promise((resolve, reject) => {
+      fetch(URL + '/games/'+gameId, {
+          credentials: 'include'
+      })
+      .then(response => {
+        console.log(response);
+          if(response.ok){
+              response.json()
+              .then(game => { resolve(game); });
+          } else {
+              // analyze the cause of error
+              response.json()
+              .then(message => { reject(message); }) // error message in the response body
+              .catch(() => { reject({ error: "Cannot parse server response." }) }); // something else
+          }
+      }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); // connection errors
+    });
+  }
   
-const API = {getUsers, login, logout, getUserInfo,getMemeImage,getCaptions,saveGame,getGames};
+const API = {getUsers, login, logout, getUserInfo,getMemeImages,getCaptions,saveGame,getGames,getGame};
   
 export default API;
