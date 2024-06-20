@@ -9,19 +9,7 @@ import dayjs from "dayjs";
 const url = 'http://localhost:3001/images/';
 
 function RowMemeComponent(props) {
-    const { imageurl, round} = props;
-    /*const renderedAnswers = Array.isArray(answers) ? (
-      answers.map((item, index) => (
-        <ListGroup.Item
-          key={index}
-          variant={props.correct_answer.some(answer => answer.id === item.id) ? 'success' : ''}
-        >
-          {item.text}
-        </ListGroup.Item>
-      ))
-    ) : (
-      <ListGroup.Item>Nessuna risposta disponibile</ListGroup.Item>
-    );*/
+    const { imageurl, round,score} = props;
   
     return (
       <Card>
@@ -29,13 +17,13 @@ function RowMemeComponent(props) {
           <Col md={3}>
             <Card.Img src={imageurl} />
             <Card.Body>
-              <Card.Title>ROUND NUMERO {round}</Card.Title>
+              <Card.Title>ROUND {round}</Card.Title>
             </Card.Body>
           </Col>
           <Col md={9}>
-            <ListGroup>
-              
-            </ListGroup>
+          <Card.Text className={score == 0 ? 'text-danger' : 'text-success'}>
+              {score === 0 ? 'Hai sbagliato 0 punti in questo round' : 'Hai Indovinato 5 punti in questo round'}
+            </Card.Text>
           </Col>
         </Row>
       </Card>
@@ -52,8 +40,8 @@ function ViewGameRoute(props) {
     const { gameid } = useParams(); // Extract game ID from route parameters
     console.log("quale id mi arraiva "+gameid);
 
-    const goHome = () => {
-        navigate("/");
+    const handleBack = () => {
+      navigate(-1); // Go back to the previous page
     };
     //eseguo la fetch del gioco
     useEffect(() => {
@@ -61,7 +49,6 @@ function ViewGameRoute(props) {
             try {
                 const ga= await API.getGame(gameid);
                 setGame(ga);
-                console.log(ga)
                 if( ga != null && ga.listmeme !== null)
                 {
                         setListmeme(ga.listmeme.split(","));
@@ -79,15 +66,12 @@ function ViewGameRoute(props) {
                {game ? (
                 <>
                     <Row>
-                        <h1>Punteggio Totale della partita: {game.score}</h1>
-                    </Row>
-                    <Row>
-                        <h2>Riepilogo: {null}</h2>
+                      <h1>Punteggio Totale della partita: {game.score.split(',').map(Number).reduce((acc, score) => acc + score, 0)}</h1>
                     </Row>
                     <Row>
                         <Col>
-                            <Button variant="danger" onClick={goHome}>
-                                Home
+                            <Button variant="danger" onClick={handleBack}>
+                                Indietro
                             </Button>
                         </Col>
                     </Row>
@@ -95,7 +79,7 @@ function ViewGameRoute(props) {
                         {listmeme ? (
                             listmeme.map((meme, index) => (
                                 <Row key={index+1} style={{ padding: '1rem' }}>
-                                <RowMemeComponent key={index+1} imageurl={url+meme} round={index+1} />
+                                <RowMemeComponent key={index+1} imageurl={url+meme} round={index+1} score ={game.score.split(',').map(Number)[index]} />
                                 </Row>
                             ))
                         ) : (

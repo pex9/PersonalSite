@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import { Col, Container, Spinner, Form, Button, Card, ListGroup, Badge, Row } from "react-bootstrap";
+import { Col, Container, Spinner, Form, Button, Card, ListGroup, Badge, Row, CardImg } from "react-bootstrap";
 
 import AppContext from "../AppContext";
 import ErrorView from "./Error";
@@ -13,17 +13,23 @@ const url = 'http://localhost:3001/images/';
 function ImageComponent(props) {
   const { round, error, listmeme } = props;
   const memeUrl = listmeme && listmeme[round] ? listmeme[round].url : null;
-
+  const context = useContext(AppContext);
+  const loadingState = context.loadingState;
   return (
-    <div>
-      <h1>ROUND NUMERO {round}</h1>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {memeUrl ? (
-        <img src={url+ memeUrl} alt="Meme" style={{ width: '500px', height: '500px', objectFit: 'cover' }} />
-      ) : (
-        <p>Caricamento...</p>
-      )}
-    </div>
+    <Row>
+      <Col ></Col>
+      <Card className="mt-5" style={{ width: '40rem' }} >
+        <Card.Body>
+          <Card.Title className="fw-bold">  ROUND {round}</Card.Title>
+          {memeUrl ? (
+            <CardImg src={url + memeUrl} alt="Meme" />
+          ) : (
+           <Container className='my-5 text-center'> <Spinner variant='primary' /> </Container>
+          )}
+        </Card.Body>
+      </Card>
+      <Col></Col>
+    </Row>
   );
 }
 
@@ -46,16 +52,16 @@ function RowMemeComponent(props) {
     <Card>
       <Row>
         <Col md={3}>
-          <Card.Img src={url+ imageurl} />
+          <Card.Img src={url + imageurl} />
           <Card.Body>
-            <Card.Title>ROUND NUMERO {round}</Card.Title>
+            <Card.Title>ROUND {round}</Card.Title>
             {props.right ? (
               <p style={{ color: 'Green' }} >Hai ottenuto 5 punti</p>
             ) : (
               <p style={{ color: 'red' }}>Risposta errata 0 punti </p>
             )}
-            
-            {props.answer != -1  && props.answer != undefined? (
+
+            {props.answer != -1 && props.answer != undefined ? (
               <p> Risposta Selezionata {props.answer}</p>
             ) : (
               <p>Non hai selezionato nessuna didascalia</p>
@@ -75,40 +81,36 @@ function RowMemeComponent(props) {
 function InfoComponent(props) {
   const context = useContext(AppContext);
   const loginState = context.loginState;
+  
   //inserire score partita a seconda se errato o no per ogni turno guardare quando la risposta è vuota
-  console.log(props.captions)
-  const right = (props.captions != undefined && props.captions[props.round]) ? props.captions[props.round].find(caption => caption.id === props.choices[props.choices.length - 1])?.isCorrect : false;
+  const right = (props.captions != undefined && props.captions[props.round]) ? props.captions[props.round].find(caption => caption.id == props.choices[props.choices.length - 1])?.isCorrect : false;
   return (
     <Container>
-      <Row>
-        <h1>Punteggio Totale della partita: {props.score}</h1>
-      </Row>
-      <Row>
-        <h2>Riepilogo: {null}</h2>
+      <Row  className="m-3">
+        <h1>Punteggio Totale della partita: {props.score.reduce((accumulator, currentValue) => accumulator + currentValue, 0)} </h1>
       </Row>
       {
         loginState.loggedIn === false && (
           <Row>
             <ListGroup>
-              <Row key={props.round} style={{ padding: '1rem' }}>
-                <RowMemeComponent  answer = {props.captions[props.round]?.find(caption => caption.id == props.choices[props.choices.length - 1])?.text} right={right} correct_answer={props.captions[props.round]?.filter((caption) => caption.isCorrect)} useranswer={props.answer} answers={props.captions[props.round]} imageurl={props.listmeme[props.round].url} round={props.round} />
+              <Row key={props.round}>
+                <RowMemeComponent answer={props.captions[props.round]?.find(caption => caption.id == props.choices[props.choices.length - 1])?.text} right={right} correct_answer={props.captions[props.round]?.filter((caption) => caption.isCorrect)} useranswer={props.answer} answers={props.captions[props.round]} imageurl={props.listmeme[props.round].url} round={props.round} />
               </Row>
             </ListGroup>
           </Row>
         )
       }
-      {/* Conditional rendering based on loginState.loggedIn */}
       {loginState.loggedIn === true && (
         Object.keys(props.captions).map(key => {
-          const right = (props.captions != undefined && props.captions[key]) ? props.captions[key]?.find(caption => caption.id == props.choices[key-1])?.isCorrect : false;
-            return (
-            <Row key={`${key}`} style={{ padding: '1rem' }}>
-              <RowMemeComponent answer = {props.captions[key]?.find(caption => caption.id == props.choices[key-1])?.text}  right={right} answers={props.captions[key]} correct_answer={props.captions[key]?.filter((caption) => caption.isCorrect)} imageurl={props.listmeme[key].url} round={key} />
+          const right = (props.captions != undefined && props.captions[key]) ? props.captions[key]?.find(caption => caption.id == props.choices[key - 1])?.isCorrect : false;
+          return (
+            <Row key={`${key}`}  className="m-3" >
+              <RowMemeComponent answer={props.captions[key]?.find(caption => caption.id == props.choices[key - 1])?.text} right={right} answers={props.captions[key]} correct_answer={props.captions[key]?.filter((caption) => caption.isCorrect)} imageurl={props.listmeme[key].url} round={key} />
             </Row>
-            );
+          );
         })
       )}
-      <Row>
+      <Row className="mt-3">
         <Col>
           <Button variant="danger" onClick={props.exitGame}>
             Home
@@ -158,35 +160,44 @@ function MessageComponent(props) {
   const caption = props.captions[props.round].find(caption => caption.id === props.choices[props.choices.length - 1]);
 
   return (
-    <Container>
-      <Row>
-        <h2 className={responseClass}>
-          {text}
-        </h2>
-        <h1>Punteggio corrente {props.score}</h1>
-        <h2>Scelta fatta in questo turno: {previoustext !== "" ? previoustext : "Didascalia non scelta"}</h2>
+    <Container className="mt-5">
+      <Row className="mb-4">
+        <Col>
+          <h1 className={responseClass}>
+            {text}
+          </h1>
+          <h1>Punteggio corrente: {props.score.reduce((accumulator, currentValue) => accumulator + currentValue, 0)}</h1>
+          <h2>Scelta fatta: {previoustext !== "" ? previoustext : "Didascalia non scelta"}</h2>
+        </Col>
       </Row>
-      <Row>
-        <ListGroup className="custom-list-group">
-          {correct_answer.map((answer, index) => (
-            <ListGroup.Item key={index} className="custom-list-group-item">
-              <strong>Risposta corretta:</strong> {answer.text}
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
+      <Row className="mb-4">
+          <ListGroup>
+            {correct_answer.map((answer, index) => (
+              <Col key={index}>
+              <ListGroup.Item  variant="success" key={index} className="custom-list-group-item mb-2">
+                <strong>Risposta corretta:</strong> {answer.text}
+              </ListGroup.Item>
+              </Col>
+            ))}
+          </ListGroup>
+       
       </Row>
+
       <Row className="justify-content-center">
         <Col xs="auto" className="p-1">
-          <Button variant="primary" onClick={handleNextTurn}>{loginState.loggedIn ? "Prossimo turno" : "Riepilogo"}</Button>
+          <Button variant="primary" onClick={handleNextTurn}>
+            {loginState.loggedIn ? "Prossimo turno" : "Riepilogo"}
+          </Button>
         </Col>
         <Col xs="auto" className="p-1">
-          <Button variant="danger" onClick={props.exitGame}>{loginState.loggedIn ? "Abbandona partita" : "Home"}</Button>
+          <Button variant="danger" onClick={props.exitGame}>
+            {loginState.loggedIn ? "Abbandona partita" : "Home"}
+          </Button>
         </Col>
       </Row>
     </Container>
   );
 }
-
 function CaptionComponentForm(props) {
 
   const memeid = props.listmeme && props.listmeme[props.round] ? props.listmeme[props.round].id : null;
@@ -231,27 +242,23 @@ function CaptionComponentForm(props) {
     if (props.selectedCaption !== -1) {
       const selectedCaption = props.captions[props.round].find(caption => caption.id == props.selectedCaption);
       if (selectedCaption && selectedCaption.isCorrect) {
-        props.setScore(props.score + 5);
+        props.setScore((oldscore)=> [...oldscore, 5]);
         props.setAnswer(true);
+      } else {
+        props.setScore((oldscore)=> [...oldscore, 0]);
+        props.setAnswer(false);
       }
+    } else {
+      props.setScore((oldscore)=> [...oldscore, 0]);
+      props.setAnswer(false);
     }
-    if (props.round < 3) {
       props.setChoices([...props.choices, props.selectedCaption]);
       props.setEndRound(true);
-    } else {
-      props.setChoices([...props.choices, props.selectedCaption]);
-      props.handleSaveGame();
-      props.setGameOver(true);
-    }
   };
 
   useEffect(() => {
     if (props.timeLeft === 0) {
-      if (props.round <= 3) {
         props.setEndRound(true);
-      } else {
-        props.setGameOver(true);
-      }
       return;
     }
 
@@ -264,7 +271,7 @@ function CaptionComponentForm(props) {
   const captionsForRound = props.captions[props.round] || [];
   return (
     <Container>
-      <Badge bg="light" className="countdown-timer">
+      <Badge bg="transparent" className="countdown-timer m-2" >
         Tempo rimanente: {props.timeLeft} secondi
       </Badge>
       <Card className="card-custom">
@@ -311,7 +318,7 @@ function MemeComponent() {
   const [captions, setCaptions] = useState({});
   const [selectedCaption, setSelectedCaption] = useState(-1);
   const [choices, setChoices] = useState([]);
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useState([]);
   const [answer, setAnswer] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [endRound, setEndRound] = useState(false);
@@ -325,7 +332,7 @@ function MemeComponent() {
   const navigate = useNavigate();
 
   const handleRetry = () => {
-    setScore(0);
+    setScore([]);
     setGameOver(false);
     setRound(1);
     setChoices([]);
@@ -342,9 +349,12 @@ function MemeComponent() {
   };
 
   const handleSaveGame = async () => {
+
     const creationDate = dayjs().format('YYYY-MM-DD');
+    const gamescore = [...score].join(","); // prendo il risultato precedente
+    console.log(gamescore);
     try {
-      const response = await API.saveGame(score, creationDate, listmeme.slice(1, 4).map(meme => meme.url).join(','));
+      const response = await API.saveGame(gamescore, creationDate, listmeme.slice(1, 4).map(meme => meme.url).join(','));
       if (response.ok) {
         setGameOver(true);
       } else {
@@ -378,26 +388,30 @@ function MemeComponent() {
     if (!endRound) {
       return (
         <Container>
-          <ImageComponent listmeme={listmeme} error={error} round={round} />
-          <CaptionComponentForm
-            captions={captions}
-            setCaptions={setCaptions}
-            selectedCaption={selectedCaption}
-            setSelectedCaption={setSelectedCaption}
-            setChoices={setChoices}
-            choices={choices}
-            setGameOver={setGameOver}
-            timeLeft={timeLeft}
-            setTimeLeft={setTimeLeft}
-            exitGame={exitGame}
-            handleSaveGame={handleSaveGame}
-            setScore={setScore}
-            score={score}
-            setAnswer={setAnswer}
-            listmeme={listmeme}
-            round={round}
-            setEndRound={setEndRound}
-          />
+          <Row >
+            <ImageComponent listmeme={listmeme} error={error} round={round} />
+          </Row>
+          <Row>
+            <CaptionComponentForm
+              captions={captions}
+              setCaptions={setCaptions}
+              selectedCaption={selectedCaption}
+              setSelectedCaption={setSelectedCaption}
+              setChoices={setChoices}
+              choices={choices}
+              setGameOver={setGameOver}
+              timeLeft={timeLeft}
+              setTimeLeft={setTimeLeft}
+              exitGame={exitGame}
+              handleSaveGame={handleSaveGame}
+              setScore={setScore}
+              score={score}
+              setAnswer={setAnswer}
+              listmeme={listmeme}
+              round={round}
+              setEndRound={setEndRound}
+            />
+          </Row>
         </Container>
       );
     } else {

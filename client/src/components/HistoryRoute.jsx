@@ -30,20 +30,20 @@ function MyHistoryTable(props) {
 
   return (
     <Container>
-      <h1>History</h1>
+      <h1>Storico</h1>
       <Table striped bordered hover>
         <thead className="text-center">
           <tr>
             <th>
-              Date
+              Data partita
               {sort === 'desc' ? (
                 <i className="mx-1 bi bi-sort-down" onClick={() => setSort('asc')} />
               ) : (
                 <i className="mx-1 bi bi-sort-up" onClick={() => setSort('desc')} />
               )}
             </th>
-            <th>Score</th>
-            <th>Actions</th>
+            <th>Punteggio</th>
+            <th>Azioni</th>
           </tr>
         </thead>
         <tbody className="text-center">

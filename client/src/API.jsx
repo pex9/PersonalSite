@@ -103,6 +103,8 @@ function getUsers() {
   //funzione salvataggio partita solo accessibile da utenti loggati
   function saveGame(score, date,listmeme) {
     // TO DO FIX THIS
+    console.log("sto salvando la partita");
+    console.log(score);
     return new Promise((resolve, reject) => {
       fetch(URL + '/savegame', {
         method: 'POST',

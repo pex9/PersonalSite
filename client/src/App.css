@@ -50,11 +50,7 @@
   font-size: 16px; /* Adjust subtitle font size */
   font-weight: 500; /* Make subtitle text semi-bold */
 }
-.custom-list-group {
-  width: 400px; /* Riduce la larghezza della lista */
-  margin: 0 auto; /* Centra la lista */
-  font-size: 0.9em; /* Riduce la dimensione del testo */
-}
+
 
 .custom-list-group-item {
   padding: 10px; /* Riduce il padding */

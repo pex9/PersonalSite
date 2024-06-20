@@ -87,8 +87,8 @@ function App() {
           <Route path='/viewgame/:gameid' element={<ViewGameRoute />} />
           <Route path='/login' element={<LoginRoute />} />
           <Route path='/' element={<HomeRoute />} />
-          <Route path='/*' element={<DefaultRoute />} />
           <Route path='/history' element={<HistoryRoute />} />
+          <Route path='/*' element={<DefaultRoute />} />
         </Routes>
       </AppContext.Provider>
     </BrowserRouter>

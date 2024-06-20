@@ -28,7 +28,7 @@ function Description({ startGame }) {
 function MyMain() {
     const navigate = useNavigate();
     const context = useContext(AppContext);
-    const { loginState, gamestarted } = context;
+    const {gamestarted} = context;
 
     const startGame = () => {
         gamestarted.setGameStarted(true);  // Imposta lo stato del gioco a iniziato
