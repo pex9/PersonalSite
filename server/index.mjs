@@ -77,7 +77,7 @@ const isLoggedIn = (req, res, next) => {
   return res.status(401).json({ error: 'Not authenticated' });
 }
 
-/*** Users APIs ***/
+/*** User APIs ***/
 
 // POST /api/sessions 
 // login
@@ -118,36 +118,56 @@ app.get('/api/sessions/current', (req, res) => {
     res.status(401).json({ error: 'Unauthenticated user!' });
 });
 
-/*** Images and captions APIs ***/
+/*** Immagini e didascalie APIs ***/
 
-// GET /api/images
+// GET /api/images, funzione che fa richiesta al DAO per ottenere i nomi delle immagini disponibili ( di conseguenza gli url delle immagini)
 app.get('/api/images', async (req, res) => {
   dao.getImages()
     .then(images => res.json(images))
     .catch(() => res.status(500).end());
 });
-
+// GET /api/captions/:memeid, funzione che fa richiesta al DAO per ottenere le didascalie per un meme specifico
 app.get('/api/captions/:memeid', async (req, res) => {
   dao.getCaptions(req.params.memeid).
     then(captions => res.json(captions))
     .catch(() => res.status(500).end());
 });
 
-app.post('/api/savegame', isLoggedIn, async (req, res) => {
+/*** Gioco  APIs, disponibili solo per utente loggati ***/
+
+// POST /api/savegame, funzione che salva una partita nel database, richiede il punteggio, la data e la lista di meme usati e dopo oppurtuna validazione salva la partita disponibile solo per utenti autenticati
+app.post('/api/savegame', isLoggedIn,[
+  check('score').isString(),
+  check('date').isISO8601(),
+  check('listmeme').isString()
+],async (req, res) => {
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+      return res.status(422).json({errors: errors.array()});
+  }
   const score = req.body.score;
   const date = req.body.date;
   const listmeme = req.body.listmeme;
-  dao.saveGame(req.user.id, score, date,listmeme)
+  // Check if the required data is present and valid
+  if (!score || !date || !listmeme) {
+    res.status(400).end();
+    return;
+  }
+  // Save the game
+  dao.saveGame(req.user.id, score, date, listmeme)
     .then(game => res.json(null))
     .catch(() => res.status(500).end());
 });
 
+// GET /api/games, funzione che fa richiesta al DAO per ottenere le partite salvate da un utente isponibile solo per utenti autenticati
 app.get('/api/games', isLoggedIn,async (req, res) => {
   dao.getGames(req.user.id)
     .then(games => res.json(games))
     .catch(() => res.status(500).end());
 });
 
+// GET /api/games/:id, funzione che fa richiesta al DAO per ottenere una partita salvata da un utente isponibile solo per utenti autenticati
 app.get('/api/games/:id', isLoggedIn, (req, res) => { 
   dao.getGame(req.params.id, req.user.id)
     .then(game => res.json(game))

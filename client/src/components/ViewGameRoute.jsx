@@ -3,9 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Col, Container, Button, Card, ListGroup, Badge, Row } from "react-bootstrap";
 import AppContext from "../AppContext";
 import ErrorView from "./Error";
-import MyNavbar from './MyNavbar';
 import API from "../API";
-import dayjs from "dayjs";
 const url = 'http://localhost:3001/images/';
 
 function RowMemeComponent(props) {
@@ -21,9 +19,7 @@ function RowMemeComponent(props) {
             </Card.Body>
           </Col>
           <Col md={9}>
-          <Card.Text className={score == 0 ? 'text-danger' : 'text-success'}>
-              {score === 0 ? 'Hai sbagliato 0 punti in questo round' : 'Hai Indovinato 5 punti in questo round'}
-            </Card.Text>
+              <h2  className={score == 0 ? 'text-danger' : 'text-success'}>{score === 0 ? 'In questo round hai sbagliato,  0 punti ottenuti in questo round' : 'In questo round hai indovinato,  5 punti ottenuti in questo round'}</h2>
           </Col>
         </Row>
       </Card>
@@ -32,13 +28,11 @@ function RowMemeComponent(props) {
 
 function ViewGameRoute(props) {
     const context = useContext(AppContext);
-    const loginState = context.loginState;
     const navigate = useNavigate();
     const [game, setGame] = useState(null);
     const [listmeme, setListmeme] = useState(null);
 
     const { gameid } = useParams(); // Extract game ID from route parameters
-    console.log("quale id mi arraiva "+gameid);
 
     const handleBack = () => {
       navigate(-1); // Go back to the previous page
@@ -49,10 +43,7 @@ function ViewGameRoute(props) {
             try {
                 const ga= await API.getGame(gameid);
                 setGame(ga);
-                if( ga != null && ga.listmeme !== null)
-                {
-                        setListmeme(ga.listmeme.split(","));
-                }
+                setListmeme(ga.listmeme.split(","));
             } catch (err) {
                 console.error(err);
             }
@@ -61,7 +52,6 @@ function ViewGameRoute(props) {
     }, []);
 
     return (
-        console.log(listmeme),
             <Container>
                {game ? (
                 <>

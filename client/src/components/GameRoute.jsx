@@ -56,9 +56,9 @@ function RowMemeComponent(props) {
           <Card.Body>
             <Card.Title>ROUND {round}</Card.Title>
             {props.right ? (
-              <p style={{ color: 'Green' }} >Hai ottenuto 5 punti</p>
+              <h3 style={{ color: 'Green' }} >Hai ottenuto 5 punti</h3>
             ) : (
-              <p style={{ color: 'red' }}>Risposta errata 0 punti </p>
+              <h3 style={{ color: 'red' }}>Risposta errata 0 punti </h3>
             )}
 
             {props.answer != -1 && props.answer != undefined ? (
@@ -86,7 +86,7 @@ function InfoComponent(props) {
   const right = (props.captions != undefined && props.captions[props.round]) ? props.captions[props.round].find(caption => caption.id == props.choices[props.choices.length - 1])?.isCorrect : false;
   return (
     <Container>
-      <Row  className="m-3">
+      <Row className="m-3">
         <h1>Punteggio Totale della partita: {props.score.reduce((accumulator, currentValue) => accumulator + currentValue, 0)} </h1>
       </Row>
       {
@@ -147,7 +147,6 @@ function MessageComponent(props) {
 
   let previoustext = "";
   let correct_answer = [];
-  //console.log(props.choices[props.choices.length - 1]);
   for (let i = 0; i < props.captions[props.round].length; i++) {
     if (props.captions[props.round][i].id == props.choices[props.choices.length - 1]) {
       previoustext = props.captions[props.round][i].text;
@@ -352,7 +351,6 @@ function MemeComponent() {
 
     const creationDate = dayjs().format('YYYY-MM-DD');
     const gamescore = [...score].join(","); // prendo il risultato precedente
-    console.log(gamescore);
     try {
       const response = await API.saveGame(gamescore, creationDate, listmeme.slice(1, 4).map(meme => meme.url).join(','));
       if (response.ok) {

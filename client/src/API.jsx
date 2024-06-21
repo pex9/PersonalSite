@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 
 const URL = 'http://localhost:3001/api';
 
-
+//funzione per fetchare gli utenti dal db
 function getUsers() {
     // call GET /api/users
     return new Promise((resolve, reject) => {
@@ -22,7 +22,7 @@ function getUsers() {
       }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); // connection errors
     });
   } 
-  
+  //funzione per il login
   async function login(credentials) {
     // call POST /api/sessions
     let response = await fetch(URL + '/sessions', {
@@ -49,7 +49,7 @@ function getUsers() {
       credentials: 'include' 
     });
   }
-  
+  // funzione per ottenere le informazioni dell'utente loggato
   async function getUserInfo() {
     // call GET /api/sessions/current
     const response = await fetch(URL + '/sessions/current', {
@@ -64,7 +64,7 @@ function getUsers() {
     }
   }
 
-
+// funzione per ottenere i nomi delle immagini (e di conseguenza gli url) da utilizza nel gioco, 
   function getMemeImages() {
     // call GET /api/images
     return new Promise((resolve, reject) => {
@@ -83,6 +83,8 @@ function getUsers() {
       }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); // connection errors
     });
   }
+  
+  // funzione che dato un memeid ritorna tutte 2 didascalie associate corrette e 5 causali non corrette
   function getCaptions(memeid){
     return new Promise((resolve, reject) => {
       fetch(URL + '/captions/'+memeid, {
@@ -100,11 +102,10 @@ function getUsers() {
       }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); // connection errors
     });
   }
-  //funzione salvataggio partita solo accessibile da utenti loggati
+
+  //funzione salvataggio partita solo accessibile da utenti loggati che riceve il punteggio, la data e la lista di meme e utente
+
   function saveGame(score, date,listmeme) {
-    // TO DO FIX THIS
-    console.log("sto salvando la partita");
-    console.log(score);
     return new Promise((resolve, reject) => {
       fetch(URL + '/savegame', {
         method: 'POST',
@@ -131,6 +132,7 @@ function getUsers() {
     });
   }
 
+  //funzione per ottenere tutte le partite salvate  di un utente loggato
 function getGames() {
     // call GET /api/games
     return new Promise((resolve, reject) => {
@@ -150,13 +152,13 @@ function getGames() {
       }).catch(() => { reject({ error: "Cannot communicate with the server." }) }); // connection errors
     });
   }
+  //funzione che dato un gameId ritorna la partita salvata assiociata con tutte le informazioni relative
 function getGame(gameId) {
     return new Promise((resolve, reject) => {
       fetch(URL + '/games/'+gameId, {
           credentials: 'include'
       })
       .then(response => {
-        console.log(response);
           if(response.ok){
               response.json()
               .then(game => { resolve(game); });

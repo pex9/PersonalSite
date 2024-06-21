@@ -4,9 +4,6 @@ import { useNavigate } from "react-router-dom";
 import AppContext from "../AppContext";
 function DefaultRoute() {
     const navigate = useNavigate();
-    const context = useContext(AppContext);
-    const loadingState = context.loadingState;
-
     return(
         <Container fluid>
             <Row className="my-5">

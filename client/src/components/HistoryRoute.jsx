@@ -50,7 +50,7 @@ function MyHistoryTable(props) {
           {sortedgames.map((game) => (
             <tr key={game.id}>
               <td>{dayjs(game.created_at).format('MMMM D, YYYY')}</td>
-              <td>{game.score}</td>
+              <td>{game.score.split(',').map(Number).reduce((acc, score) => acc + score, 0)}</td>
               <td>
                 <Button variant='primary' className='rounded-circle' onClick={() => { 
                   navigate(`/viewgame/${game.id}`); 

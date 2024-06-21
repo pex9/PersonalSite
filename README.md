@@ -6,10 +6,10 @@
 
 - Route `/`: pagina principale, rappresenta il L'inizio del gioco con la possibilita di loggarsi nella top bar, accessibile da qualsiasi utente
 - Route `/history`: pagina dedicata per accedere allo storico delle partite di un utente,accessibile solo dagli utenti autenticati
-- Route `/game/`: pagine dedicata alla partita dell'utente, accessibile da qualsiasi utente
+- Route `/viewgame/:gameid`: pagina dedicata all'accesso a una partita dell'utente nel suo storico, accessibile da utente autenticati
+- Route `/game/`: pagina dedicata alla partita dell'utente, accessibile da qualsiasi utente
 - Route `/login`:  pagina contenente il form per l'autenticazione
 - Route `/*`: default route per le route inesistenti (contiene pulsante per ritornare alla pagina principale)
-- ...
 
 ## API Server
 
@@ -40,11 +40,89 @@
       "name": "Mario",
   }
   ```
-
 ### API restanti
 
+- GET `/api/images`
+  - Descrizione: Restituisce le immagini disponibili per il gioco
+  - Request: Nessun body
+  - Response: restituisce `200 OK` (successo) o `500 Internal Server Error` (errore generico). In caso di successo il body contiene un array di oggetti con le informazioni delle immagini disponibili (Content-Type: `application/json`)
+  ```json
+  [
+      {
+          "id": 1,
+          "image_url": "meme1.jpg"
+      },
+      {
+          "id": 2,
+          "image_url": "meme2.jpg"
+      }
+  ]
+  ```
 
+- GET `/api/captions/:memeid`
+  - Descrizione: Restituisce le didascalie associate a un meme specifico
+  - Request: Nessun body, è presente il parametro `memeid` che rappresenta l'id del meme in cui sono richieste le didascalie
+  - Response: restituisce `200 OK` (successo) o `500 Internal Server Error` (errore generico). In caso di successo il body contiene un array di oggetti con le informazioni delle didascalie associate al meme (Content-Type: `application/json`)
+  ```json
+  [
+      {
+          "id": 1,
+          "meme_id": 1,
+          "text": "xxx..."
+      },
+      {
+          "id": 2,
+          "meme_id": 1,
+          "text": "xxx..."
+      }
+  ]
+  ```
 
+- POST `/api/savegame`
+  - Descrizione: Autenticata,Salva una partita nel database
+  - Request: il body contiene le informazioni della partita da salvare (Content-Type: `application/json`)
+  ```json
+  {
+      "score": "5,0,0",
+      "date": "2024-06-20",
+      "listmeme": "meme1.jpg,meme2.jpg,meme3.jpg"
+  }
+  ```
+  - Response: restituisce `200 OK` (successo), `400 Bad Request` (dati mancanti o non validi), `401 Unauthorized` (utente non autenticato) o `500 Internal Server Error` (errore generico). In caso di successo il body è vuoto.
+
+- GET `/api/games`
+  - Descrizione: Autenticata,Restituisce le partite salvate dall'utente
+  - Request: Nessun body
+  - Response: restituisce `200 OK` (successo) o `500 Internal Server Error` (errore generico). In caso di successo il body contiene un array di oggetti con le informazioni delle partite salvate dall'utente (Content-Type: `application/json`)
+  ```json
+  [
+      {
+          "id": 1,
+          "user_id": 1,
+          "score": "5,0,5",
+          "created_at": "2024-06-20"
+      },
+      {
+          "id": 2,
+          "user_id": 1,
+          "score": "5,5,5",
+          "created_at": "2024-06-20"
+      }
+  ]
+  ```
+
+- GET `/api/games/:id`
+  - Descrizione: Autenticata,Restituisce una partita salvata dall'utente
+  - Request: Nessun body,è presente il parametro `id` che rappresenta l'id del partita che si deve ritornare
+  - Response: restituisce `200 OK` (successo) o `500 Internal Server Error` (errore generico). In caso di successo il body contiene un oggetto con le informazioni della partita salvata dall'utente (Content-Type: `application/json`)
+  ```json
+  {
+      "id": 1,
+      "user_id": 1,
+      "score": "5,0,5",
+      "created_at": "2024-06-20"
+  }
+  ```
 
 ## Database Tables
 
@@ -54,12 +132,13 @@
   - Tabella utilizzata per memorizzare le partite giocate dagli utenti.
   - `id`: ID della partita.
   - `user_id`: ID dell'utente che ha giocato la partita (foreign key da `users`).
-  - `score`: Punteggio totale ottenuto nella partita.
+  - `score`: Punteggii di un ogni round separati da virgola ottenuti nella partita.
+  - `listmeme`: Nomi dei meme presenti in partita separati da virgola ottenuti nella partita.
   - `created_at`: Data e ora di inizio della partita.
 - Table `meme`: (id, image_url)
   - Tabella utilizzata per memorizzare i meme disponibili per il gioco dove le immagini sono rese disponibili dal server pubblicamente nella directory public.
   - `id`: ID del meme.
-  - `image_url`: URL dell'immagine del meme.
+  - `image_url`: Nome dell'immagine del meme.
 - Table `didascalie`: (id, meme_id, text)
   - Tabella utilizzata per memorizzare le didascalie associate ai meme(una meme ha almeno 2 didascalie associate come da progetto).
   - `id`: ID della didascalia.
@@ -74,8 +153,8 @@
 - `LoginRoute` (in `Authentication.jsx`): rappresenta la schermata contenente il form per l'autenticazione
 - `HistoryRoute` (in `HistoryRoute.jsx`): rappresenta la schermata contenente lo storico delle partite fatte dall'utente con data e punteggio 
 - `GameRoute` (in `GameRoute.jsx`): rappresenta la schermata di gioco con la possibita di selezionare un didascalia adatta all'immagine e riepilogo
-
-
+- `HistoryRoute` (in `HistoryRoute.jsx`): rappresenta la generale dello storico delle partite dell'utente con la possibilita di visualizzare in dettaglio una partita.
+- `ViewGameRoute` (in `ViewGameRoute.jsx`): rappresenta la schermata riferita a una partita dello storico con dettagli di meme e punteggi associati.
 
 ## Screenshot
 
