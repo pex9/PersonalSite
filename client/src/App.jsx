@@ -10,6 +10,7 @@ import HomeRoute from './components/HomeRoute';
 import HistoryRoute from './components/HistoryRoute';
 import GameRoute from './components/GameRoute';
 import ViewGameRoute from './components/ViewGameRoute';
+import ProfileRoute from './components/ProfileRoute';
 import API from './API';
 function App() {
 
@@ -88,6 +89,7 @@ function App() {
           <Route path='/login' element={<LoginRoute />} />
           <Route path='/' element={<HomeRoute />} />
           <Route path='/history' element={<HistoryRoute />} />
+          <Route path='/profile' element={<ProfileRoute />} />
           <Route path='/*' element={<DefaultRoute />} />
         </Routes>
       </AppContext.Provider>

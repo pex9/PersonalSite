@@ -22,9 +22,9 @@ export function MyNavbar() {
                 <Navbar.Text>
                   {'Signed in as: ' + loginState.user.name}
                 </Navbar.Text>
-                <Button className='mx-2 rounded-pill' variant='info' onClick={() => navigate('/history')}>
-                  {'History '}
-                  <i className="bi bi-clock-history" />
+                <Button className='mx-2 rounded-pill' variant='info' onClick={() => navigate('/profile')}>
+                  {'My Profile'}
+                  <i className="bi bi-person" />
                 </Button>
                 <Button className='mx-2 rounded-pill' variant='info' onClick={() => navigate('/')}>
                   {'Home '}

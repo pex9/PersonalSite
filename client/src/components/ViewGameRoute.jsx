@@ -5,6 +5,7 @@ import AppContext from "../AppContext";
 import ErrorView from "./Error";
 import API from "../API";
 const url = 'http://localhost:3001/images/';
+import MyNavbar from './MyNavbar';
 
 function RowMemeComponent(props) {
     const { imageurl, round,score} = props;
@@ -52,6 +53,8 @@ function ViewGameRoute(props) {
     }, []);
 
     return (
+      <>
+      <MyNavbar type={props.type} />
             <Container>
                {game ? (
                 <>
@@ -80,7 +83,9 @@ function ViewGameRoute(props) {
                 <ErrorView error={game} />
                 )}
             </Container>
+            </>
         );
+        
 }
 
 export default ViewGameRoute;
