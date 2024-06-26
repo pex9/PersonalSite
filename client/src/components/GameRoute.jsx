@@ -77,7 +77,7 @@ function RowMemeComponent(props) {
 function InfoComponent(props) {
   const context = useContext(AppContext);
   const loginState = context.loginState;
-  
+  const scoretotal= props.score.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
   //inserire score partita a seconda se errato o no per ogni turno guardare quando la risposta è vuota
   const right = (props.captions != undefined && props.captions[props.round]) ? props.captions[props.round].find(caption => caption.id == props.choices[props.choices.length - 1])?.isCorrect : false;
   return (
@@ -86,7 +86,7 @@ function InfoComponent(props) {
         <h1>Punteggio Totale della partita: {props.score.reduce((accumulator, currentValue) => accumulator + currentValue, 0)} </h1>
       </Row>
       {
-        loginState.loggedIn === false && (
+        loginState.loggedIn === false && right== true && (
           <Row>
             <ListGroup>
               <Row key={props.round}>
@@ -96,16 +96,24 @@ function InfoComponent(props) {
           </Row>
         )
       }
-      {loginState.loggedIn === true && (
+      {
+      loginState.loggedIn === true && (
         Object.keys(props.captions).map(key => {
           const right = (props.captions != undefined && props.captions[key]) ? props.captions[key]?.find(caption => caption.id == props.choices[key - 1])?.isCorrect : false;
+          if(right ==true){
           return (
             <Row key={`${key}`}  className="m-3" >
               <RowMemeComponent answer={props.captions[key]?.find(caption => caption.id == props.choices[key - 1])?.text} right={right} answers={props.captions[key]} correct_answer={props.captions[key]?.filter((caption) => caption.isCorrect)} imageurl={props.listmeme[key].url} round={key} />
             </Row>
           );
+        }
         })
       )}
+      {
+        scoretotal === 0 ? (
+          <h1 className="text-danger">Nessuna risposta è stata indovinata. Giocane un'altra </h1>
+        ) : null
+      }
       <Row className="mt-3">
         <Col>
           <Button variant="danger" onClick={props.exitGame}>
@@ -178,9 +186,9 @@ function MessageComponent(props) {
 
       <Row className="justify-content-center">
         <Col xs="auto" className="p-1">
-          <Button variant="primary" onClick={handleNextTurn}>
-            {loginState.loggedIn && props.round < 3 ? "Prossimo turno" : "Riepilogo"}
-          </Button>
+        <Button variant="primary" onClick={loginState.loggedIn ? handleNextTurn : props.handleRetry}>
+          {loginState.loggedIn && props.round < 3 ? "Prossimo turno" : "Nuova partita"}
+        </Button>
         </Col>
         <Col xs="auto" className="p-1">
           <Button variant="danger" onClick={props.exitGame}>
@@ -409,6 +417,7 @@ function MemeComponent() {
       return (
         <Container>
           <MessageComponent
+            handleRetry={handleRetry}
             round={round}
             setTimeLeft={setTimeLeft}
             setRound={setRound}
