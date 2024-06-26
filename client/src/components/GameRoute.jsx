@@ -5,28 +5,26 @@ import AppContext from "../AppContext";
 import MyNavbar from './MyNavbar';
 import API from "../API";
 import dayjs from "dayjs";
-
 const url = 'http://localhost:3001/images/';
 
 function ImageComponent(props) {
-  const { round, error, listmeme } = props;
+  const { round, listmeme } = props;
   const memeUrl = listmeme && listmeme[round] ? listmeme[round].url : null;
   const context = useContext(AppContext);
-  const loadingState = context.loadingState;
   return (
     <Row>
       <Col ></Col>
-      <Card className="mt-3" style={{ width: '35rem' }} >
+      <Card className="card-image-comp mt-3" >
         <Card.Body>
           <Card.Title className="fw-bold">  ROUND {round}</Card.Title>
           {memeUrl ? (
-            <CardImg src={url + memeUrl} alt="Meme" />
+            <CardImg src={url + memeUrl} alt="Meme" className="custom-card-img" />
           ) : (
            <Container className='my-5 text-center'> <Spinner variant='primary' /> </Container>
           )}
         </Card.Body>
       </Card>
-      <Col></Col>
+      <Col ></Col>
     </Row>
   );
 }
@@ -54,9 +52,9 @@ function RowMemeComponent(props) {
           <Card.Body>
             <Card.Title>ROUND {round}</Card.Title>
             {props.right ? (
-              <h3 style={{ color: 'Green' }} >Risposta Corretta Hai ottenuto 5 punti</h3>
+              <h3 className="correct" >Risposta Corretta Hai ottenuto 5 punti</h3>
             ) : (
-              <h3 style={{ color: 'red' }}>Risposta errata 0 punti </h3>
+              <h3 className="incorrect">Risposta errata 0 punti </h3>
             )}
 
             {props.answer != -1 && props.answer != undefined ? (
@@ -154,8 +152,6 @@ function MessageComponent(props) {
   correct_answer = props.captions[props.round].filter((caption) => caption.isCorrect);
   const responseClass = correct_answer.some(answer => answer.text === previoustext) ? 'correct' : 'incorrect';
   const text = correct_answer.some(answer => answer.text === previoustext) ? 'Risposta corretta ' : 'Risposta sbagliata';
-  const caption = props.captions[props.round].find(caption => caption.id === props.choices[props.choices.length - 1]);
-
   return (
     <Container className="mt-5">
       <Row className="mb-4">

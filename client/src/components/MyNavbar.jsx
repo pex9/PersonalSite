@@ -14,7 +14,7 @@ export function MyNavbar() {
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-between">
           <div className="d-flex align-items-center">
-            <div className="mx-auto text-center"><h1 style={{ color: 'white' }}> GIOCO DI MEME </h1></div>
+            <div className="mx-auto text-center"><h1 className='site-title'> GIOCO DI MEME </h1></div>
           </div>
           <div>
             {loginState.loggedIn ? (

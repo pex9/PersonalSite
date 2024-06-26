@@ -6,7 +6,7 @@ import MyNavbar from './MyNavbar';
 
 function MyProfileComp(props) {
     return (
-        <Card className="text-center shadow" style={{ width: '100%', maxWidth: '400px', margin: 'auto',height: '100%' }}>
+        <Card className="text-center shadow card-profile-costom" >
             <Card.Body>
                 <Card.Title>Utente</Card.Title>
                 <Card.Text><strong>Email:</strong> {props.user.username}</Card.Text>
@@ -23,7 +23,7 @@ function HistoryComp() {
     };
 
     return (
-        <Card className="text-center shadow" style={{ width: '100%', maxWidth: '400px', margin: 'auto',height: '100%' }}>
+        <Card className="text-center shadow card-profile-costom" >
             <Card.Body>
                 <Card.Title>History</Card.Title>
                 <Button variant="primary" onClick={handleHistoryClick}>

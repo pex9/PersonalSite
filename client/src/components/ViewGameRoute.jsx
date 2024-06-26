@@ -1,7 +1,7 @@
 
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
-import { Col, Container, Button, Card, ListGroup, Badge, Row } from "react-bootstrap";
+import { Col, Container, Button, Card, Row } from "react-bootstrap";
 import AppContext from "../AppContext";
 import API from "../API";
 const url = 'http://localhost:3001/images/';
@@ -71,7 +71,7 @@ function ViewGameRoute(props) {
                     </Row>
                         {listmeme ? (
                             listmeme.map((meme, index) => (
-                                <Row key={index+1} style={{ padding: '1rem' }}>
+                                <Row key={index+1} className="meme-view-style">
                                 <RowMemeComponent key={index+1} imageurl={url+meme} round={index+1} score ={game.score.split(',').map(Number)[index]} />
                                 </Row>
                             ))

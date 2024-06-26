@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 import AppContext from "../AppContext";
 function DefaultRoute() {
     const navigate = useNavigate();
-    return(
+    return (
         <Container fluid>
             <Row className="my-5">
                 <Col></Col>
                 <Col>
-                    <Card style={{width: '100%'}}>
+                    <Card>
                         <Card.Header>
                             <Card.Title as='h1'>Nessuna informazione trovata</Card.Title>
                         </Card.Header>
@@ -18,9 +18,9 @@ function DefaultRoute() {
                             <Row className="my-2 text-center">
                                 <Col>
                                     <Button className='rounded-pill' variant="dark" onClick={() => {
-                                            //loadingState.updateLoading(true);
-                                            navigate('/');
-                                        }}>
+                                        //loadingState.updateLoading(true);
+                                        navigate('/');
+                                    }}>
                                         Home
                                     </Button>
                                 </Col>
@@ -31,8 +31,8 @@ function DefaultRoute() {
                 <Col></Col>
             </Row>
         </Container>
-      
+
     );
-  }
+}
 
 export default DefaultRoute;

@@ -13,47 +13,72 @@
   padding: 2em;
 }
 
+.card-image-comp {
+  width: 50rem;
+
+}
+
 .read-the-docs {
   color: #7c7b7b;
 }
+
 .navbar-title {
   color: white;
   text-align: center;
   flex: 1;
 }
+
 .card-custom {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 20px; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-  border-radius: 10px; 
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
+
 .form-group-custom {
-  margin-bottom: 20px; /* Add space below form group */
+  margin-bottom: 20px;
 }
+
 .countdown-timer {
-  text-align: center; /* Center the text */
-  font-size: 24px; /* Increase the font size */
-  font-weight: bold; /* Make the text bold */
-  margin-bottom: 20px; /* Add some space below the timer */
-  color: #ff0000; /* Change color to red to make it stand out */
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #ff0000;
 }
+
 .card-header-custom {
-  background-color: #007bff; /* Bootstrap primary color */
-  color: white; /* White text color */
-  padding: 10px 20px; /* Add padding */
-  border-top-left-radius: 10px; /* Rounded top left corner */
-  border-top-right-radius: 10px; /* Rounded top right corner */
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
 .card-subtitle-custom {
-  font-size: 16px; /* Adjust subtitle font size */
-  font-weight: 500; /* Make subtitle text semi-bold */
+  font-size: 16px;
+  font-weight: 500;
+}
+.card-profile-costom{
+ max-width: 400px;
+ width: 100%;
+ margin: 'auto';
+ height: 100%;
 }
 
-
 .custom-list-group-item {
-  padding: 10px; /* Riduce il padding */
+  padding: 10px;
+}
+
+.site-title {
+  color: white;
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.meme-view-style {
+  padding: 1rem;
 }
 
 .correct {
