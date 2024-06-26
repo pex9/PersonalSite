@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Container, Spinner, Button, Row, Col } from "react-bootstrap";
 import Table from 'react-bootstrap/Table';
 import AppContext from "../AppContext";
-import ErrorView from "./Error";
 import MyNavbar from './MyNavbar';
 import API from "../API";
 import dayjs from 'dayjs';
@@ -86,7 +85,7 @@ function HistoryRoute(props) {
   const [history, setHistory] = useState([]);
   const context = useContext(AppContext);
   const loadingState = context.loadingState;
-  const handleErrorState = context.handleErrorState;
+  const loginState = context.loginState;
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -106,7 +105,7 @@ function HistoryRoute(props) {
 
   return (
     <>
-      {handleErrorState.errMsg ?
+      {loginState == false ?
         <ErrorView /> :
         <>
           {loadingState.loading ?
@@ -121,5 +120,8 @@ function HistoryRoute(props) {
     </>
   );
 }
+
+
+
 
 export default HistoryRoute;

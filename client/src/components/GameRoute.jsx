@@ -1,9 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Col, Container, Spinner, Form, Button, Card, ListGroup, Badge, Row, CardImg } from "react-bootstrap";
-
 import AppContext from "../AppContext";
-import ErrorView from "./Error";
 import MyNavbar from './MyNavbar';
 import API from "../API";
 import dayjs from "dayjs";
@@ -18,7 +16,7 @@ function ImageComponent(props) {
   return (
     <Row>
       <Col ></Col>
-      <Card className="mt-5" style={{ width: '40rem' }} >
+      <Card className="mt-3" style={{ width: '35rem' }} >
         <Card.Body>
           <Card.Title className="fw-bold">  ROUND {round}</Card.Title>
           {memeUrl ? (
@@ -56,7 +54,7 @@ function RowMemeComponent(props) {
           <Card.Body>
             <Card.Title>ROUND {round}</Card.Title>
             {props.right ? (
-              <h3 style={{ color: 'Green' }} >Hai ottenuto 5 punti</h3>
+              <h3 style={{ color: 'Green' }} >Risposta Corretta Hai ottenuto 5 punti</h3>
             ) : (
               <h3 style={{ color: 'red' }}>Risposta errata 0 punti </h3>
             )}
@@ -185,7 +183,7 @@ function MessageComponent(props) {
       <Row className="justify-content-center">
         <Col xs="auto" className="p-1">
           <Button variant="primary" onClick={handleNextTurn}>
-            {loginState.loggedIn ? "Prossimo turno" : "Riepilogo"}
+            {loginState.loggedIn && props.round < 3 ? "Prossimo turno" : "Riepilogo"}
           </Button>
         </Col>
         <Col xs="auto" className="p-1">
@@ -455,11 +453,6 @@ function MemeComponent() {
 function GameRoute() {
   const context = useContext(AppContext);
   const loadingState = context.loadingState;
-  const handleErrorState = context.handleErrorState;
-
-  if (handleErrorState.errMsg || context.gameStarted) {
-    return <ErrorView />;
-  }
 
   if (loadingState.loading) {
     return (

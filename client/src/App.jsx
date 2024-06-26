@@ -16,7 +16,7 @@ function App() {
 
   const [user, setUser] = useState(undefined);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(false); //to display loading spinner per loading content
+  const [loading, setLoading] = useState(false); //per mostrare il caricamento delle pagine
   const [errMsg, setErrMsg] = useState(''); //to display error messages
   const [gamestarted, setGameStarted] = useState(false);
 
@@ -71,11 +71,6 @@ function App() {
         loadingState: {
           loading: loading,
           updateLoading: (loading) => setLoading(loading)
-        },
-        handleErrorState: {
-          errMsg: errMsg,
-          resetErrMsg: () => setErrMsg(''),
-          handleError: handleError
         },
         gamestarted: {
           gamestarted: gamestarted,

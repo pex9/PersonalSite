@@ -1,11 +1,12 @@
+
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import { Col, Container, Button, Card, ListGroup, Badge, Row } from "react-bootstrap";
 import AppContext from "../AppContext";
-import ErrorView from "./Error";
 import API from "../API";
 const url = 'http://localhost:3001/images/';
 import MyNavbar from './MyNavbar';
+import DefaultRoute from "./DefaultRoute";
 
 function RowMemeComponent(props) {
     const { imageurl, round,score} = props;
@@ -79,7 +80,7 @@ function ViewGameRoute(props) {
                         )}  
                 </>
                ) : (
-                <ErrorView error={game} />
+                <DefaultRoute></DefaultRoute>
                 )}
             </Container>
             </>

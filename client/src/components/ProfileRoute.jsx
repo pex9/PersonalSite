@@ -2,9 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import { Col, Container, Button, Card, ListGroup, Badge, Row } from "react-bootstrap";
 import AppContext from "../AppContext";
-import ErrorView from "./Error";
 import MyNavbar from './MyNavbar';
-import API from "../API";
 
 function MyProfileComp(props) {
     return (
@@ -40,12 +38,8 @@ function HistoryComp() {
 function ProfileRoute(props) {
     const context = useContext(AppContext);
     const loadingState = context.loadingState;
-    const handleErrorState = context.handleErrorState;
-    return (
+        return (
         <>
-            {handleErrorState.errMsg ?
-                <ErrorView /> :
-                <>
                     {loadingState.loading ? <Container className='my-5 text-center'> <Spinner variant='primary' /> </Container> :
                         <>
                             <MyNavbar type={props.type} />
@@ -62,8 +56,6 @@ function ProfileRoute(props) {
                         </>
                     }
                 </>
-            }
-        </>
     );
 }
 export default ProfileRoute;
