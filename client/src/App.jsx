@@ -16,22 +16,7 @@ function App() {
 
   const [user, setUser] = useState(undefined);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(false); //per mostrare il caricamento delle pagine
-  const [errMsg, setErrMsg] = useState(''); //to display error messages
   const [gamestarted, setGameStarted] = useState(false);
-
-  function handleError(err) {
-    let errMsg = 'Unkwnown error';
-    if (err.errors) {
-      if (err.errors[0].msg) {
-        errMsg = err.errors[0].msg;
-      }
-    } else if (err.error) {
-      errMsg = err.error;
-    }
-
-    setErrMsg(errMsg);
-  }
 
   useEffect(() => {
     async function checkAuth() {
@@ -57,8 +42,6 @@ function App() {
     setLoggedIn(false);
     setUser(undefined);
   }
-
-
   return (
     <BrowserRouter>
       <AppContext.Provider value={{
@@ -67,10 +50,6 @@ function App() {
           loggedIn: loggedIn,
           loginSuccessful: loginSuccessful,
           doLogout: doLogout
-        },
-        loadingState: {
-          loading: loading,
-          updateLoading: (loading) => setLoading(loading)
         },
         gamestarted: {
           gamestarted: gamestarted,

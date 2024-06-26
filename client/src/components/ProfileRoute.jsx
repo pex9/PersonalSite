@@ -1,6 +1,6 @@
-import React, { useContext, useState, useEffect } from "react";
-import { useNavigate, useParams } from 'react-router-dom';
-import { Col, Container, Button, Card, ListGroup, Badge, Row } from "react-bootstrap";
+import React, { useContext } from "react";
+import { useNavigate } from 'react-router-dom';
+import { Col, Container, Button, Card, Row } from "react-bootstrap";
 import AppContext from "../AppContext";
 import MyNavbar from './MyNavbar';
 
@@ -37,25 +37,20 @@ function HistoryComp() {
 
 function ProfileRoute(props) {
     const context = useContext(AppContext);
-    const loadingState = context.loadingState;
-        return (
+    return (
         <>
-                    {loadingState.loading ? <Container className='my-5 text-center'> <Spinner variant='primary' /> </Container> :
-                        <>
-                            <MyNavbar type={props.type} />
-                            <Container>
-                            <Row >
-                                <Col xs={6} md={6} className="mt-4">
-                                    <MyProfileComp user={context.loginState.user} />
-                                </Col>
-                                <Col xs={6} md={6} className="mt-4">
-                                    <HistoryComp />
-                                </Col>
-                            </Row>
-                            </Container>
-                        </>
-                    }
-                </>
+            <MyNavbar type={props.type} />
+            <Container>
+                <Row >
+                    <Col xs={6} md={6} className="mt-4">
+                        <MyProfileComp user={context.loginState.user} />
+                    </Col>
+                    <Col xs={6} md={6} className="mt-4">
+                        <HistoryComp />
+                    </Col>
+                </Row>
+            </Container>
+        </>
     );
 }
 export default ProfileRoute;

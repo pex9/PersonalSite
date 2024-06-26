@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { Container, Row, Col, Button, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import AppContext from "../AppContext";
 function DefaultRoute() {
     const navigate = useNavigate();
     return (
@@ -18,7 +17,6 @@ function DefaultRoute() {
                             <Row className="my-2 text-center">
                                 <Col>
                                     <Button className='rounded-pill' variant="dark" onClick={() => {
-                                        //loadingState.updateLoading(true);
                                         navigate('/');
                                     }}>
                                         Home

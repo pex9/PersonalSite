@@ -45,38 +45,38 @@ function MyHistoryTable(props) {
         <h2>Non ci sono ancora partite registrate per questo utente.</h2>
       ) : (
         <Table striped bordered hover className='m-4'>
-        <thead className="text-center" >
-          <tr>
-            <th>
-              Data partita
-              {sort === 'desc' ? (
-                <i className="mx-1 bi bi-sort-down" onClick={() => setSort('asc')} />
-              ) : (
-                <i className="mx-1 bi bi-sort-up" onClick={() => setSort('desc')} />
-              )}
-            </th>
-            <th>Punteggio</th>
-            <th>Azioni</th>
-          </tr>
-        </thead>
-        <tbody className="text-center">
-          {sortedgames.map((game) => (
-            <tr key={game.id}>
-              <td>{dayjs(game.created_at).format('MMMM D, YYYY HH:mm')}</td>
-              <td>{game.score.split(',').map(Number).reduce((acc, score) => acc + score, 0)}</td>
-              <td>
-                <Button variant='primary' className='rounded-circle' onClick={() => {
-                  navigate(`/viewgame/${game.id}`);
-                }}>
-                  <i className="bi bi-eye" />
-                </Button>
-              </td>
+          <thead className="text-center" >
+            <tr>
+              <th>
+                Data partita
+                {sort === 'desc' ? (
+                  <i className="mx-1 bi bi-sort-down" onClick={() => setSort('asc')} />
+                ) : (
+                  <i className="mx-1 bi bi-sort-up" onClick={() => setSort('desc')} />
+                )}
+              </th>
+              <th>Punteggio</th>
+              <th>Azioni</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody className="text-center">
+            {sortedgames.map((game) => (
+              <tr key={game.id}>
+                <td>{dayjs(game.created_at).format('MMMM D, YYYY HH:mm')}</td>
+                <td>{game.score.split(',').map(Number).reduce((acc, score) => acc + score, 0)}</td>
+                <td>
+                  <Button variant='primary' className='rounded-circle' onClick={() => {
+                    navigate(`/viewgame/${game.id}`);
+                  }}>
+                    <i className="bi bi-eye" />
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
       )}
-     
+
     </Container>
   );
 }
@@ -84,19 +84,14 @@ function MyHistoryTable(props) {
 function HistoryRoute(props) {
   const [history, setHistory] = useState([]);
   const context = useContext(AppContext);
-  const loadingState = context.loadingState;
-  const loginState = context.loginState;
-
+  const loginState = context.loginState.loggedIn;
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        //props.loadingState.setLoading(true);
         const response = await API.getGames();
         setHistory(response);
       } catch (error) {
         //handleErrorState.setErrMsg(error.message);
-      } finally {
-        //loadingState.setLoading(false);
       }
     };
 
@@ -108,7 +103,7 @@ function HistoryRoute(props) {
       {loginState == false ?
         <ErrorView /> :
         <>
-          {loadingState.loading ?
+          {history == null ?
             <Container className='my-5 text-center'> <Spinner animation="border" variant='primary' /> </Container> :
             <>
               <MyNavbar type={props.type} />

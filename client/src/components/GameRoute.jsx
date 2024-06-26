@@ -10,7 +10,6 @@ const url = 'http://localhost:3001/images/';
 function ImageComponent(props) {
   const { round, listmeme } = props;
   const memeUrl = listmeme && listmeme[round] ? listmeme[round].url : null;
-  const context = useContext(AppContext);
   return (
     <Row>
       <Col ></Col>
@@ -20,7 +19,7 @@ function ImageComponent(props) {
           {memeUrl ? (
             <CardImg src={url + memeUrl} alt="Meme" className="custom-card-img" />
           ) : (
-           <Container className='my-5 text-center'> <Spinner variant='primary' /> </Container>
+            <Container className='my-5 text-center'> <Spinner variant='primary' /> </Container> //finche il meme non è caricato mostro lo spinner
           )}
         </Card.Body>
       </Card>
@@ -77,7 +76,7 @@ function RowMemeComponent(props) {
 function InfoComponent(props) {
   const context = useContext(AppContext);
   const loginState = context.loginState;
-  const scoretotal= props.score.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+  const scoretotal = props.score.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
   //inserire score partita a seconda se errato o no per ogni turno guardare quando la risposta è vuota
   const right = (props.captions != undefined && props.captions[props.round]) ? props.captions[props.round].find(caption => caption.id == props.choices[props.choices.length - 1])?.isCorrect : false;
   return (
@@ -86,7 +85,7 @@ function InfoComponent(props) {
         <h1>Punteggio Totale della partita: {props.score.reduce((accumulator, currentValue) => accumulator + currentValue, 0)} </h1>
       </Row>
       {
-        loginState.loggedIn === false && right== true && (
+        loginState.loggedIn === false && right == true && (
           <Row>
             <ListGroup>
               <Row key={props.round}>
@@ -97,18 +96,18 @@ function InfoComponent(props) {
         )
       }
       {
-      loginState.loggedIn === true && (
-        Object.keys(props.captions).map(key => {
-          const right = (props.captions != undefined && props.captions[key]) ? props.captions[key]?.find(caption => caption.id == props.choices[key - 1])?.isCorrect : false;
-          if(right ==true){
-          return (
-            <Row key={`${key}`}  className="m-3" >
-              <RowMemeComponent answer={props.captions[key]?.find(caption => caption.id == props.choices[key - 1])?.text} right={right} answers={props.captions[key]} correct_answer={props.captions[key]?.filter((caption) => caption.isCorrect)} imageurl={props.listmeme[key].url} round={key} />
-            </Row>
-          );
-        }
-        })
-      )}
+        loginState.loggedIn === true && (
+          Object.keys(props.captions).map(key => {
+            const right = (props.captions != undefined && props.captions[key]) ? props.captions[key]?.find(caption => caption.id == props.choices[key - 1])?.isCorrect : false;
+            if (right == true) {
+              return (
+                <Row key={`${key}`} className="m-3" >
+                  <RowMemeComponent answer={props.captions[key]?.find(caption => caption.id == props.choices[key - 1])?.text} right={right} answers={props.captions[key]} correct_answer={props.captions[key]?.filter((caption) => caption.isCorrect)} imageurl={props.listmeme[key].url} round={key} />
+                </Row>
+              );
+            }
+          })
+        )}
       {
         scoretotal === 0 ? (
           <h1 className="text-danger">Nessuna risposta è stata indovinata. Giocane un'altra </h1>
@@ -157,6 +156,15 @@ function MessageComponent(props) {
       break;
     }
   }
+  const resultText = () => {
+    if (loginState.loggedIn && props.round === 3) {
+      return "Riepilogo partita";
+    } else if (loginState.loggedIn && props.round < 3) {
+      return "Prossimo turno";
+    } else {
+      return "Nuova partita";
+    }
+  };
   correct_answer = props.captions[props.round].filter((caption) => caption.isCorrect);
   const responseClass = correct_answer.some(answer => answer.text === previoustext) ? 'correct' : 'incorrect';
   const text = correct_answer.some(answer => answer.text === previoustext) ? 'Risposta corretta ' : 'Risposta sbagliata';
@@ -172,23 +180,23 @@ function MessageComponent(props) {
         </Col>
       </Row>
       <Row className="mb-4">
-          <ListGroup>
-            {correct_answer.map((answer, index) => (
-              <Col key={index}>
-              <ListGroup.Item  variant="success" key={index} className="custom-list-group-item mb-2">
+        <ListGroup>
+          {correct_answer.map((answer, index) => (
+            <Col key={index}>
+              <ListGroup.Item variant="success" key={index} className="custom-list-group-item mb-2">
                 <strong>Risposta corretta:</strong> {answer.text}
               </ListGroup.Item>
-              </Col>
-            ))}
-          </ListGroup>
-       
+            </Col>
+          ))}
+        </ListGroup>
+
       </Row>
 
       <Row className="justify-content-center">
         <Col xs="auto" className="p-1">
-        <Button variant="primary" onClick={loginState.loggedIn ? handleNextTurn : props.handleRetry}>
-          {loginState.loggedIn && props.round < 3 ? "Prossimo turno" : "Nuova partita"}
-        </Button>
+          <Button variant="primary" onClick={loginState.loggedIn ? handleNextTurn : props.handleRetry}>
+            {resultText()}
+          </Button>
         </Col>
         <Col xs="auto" className="p-1">
           <Button variant="danger" onClick={props.exitGame}>
@@ -243,23 +251,23 @@ function CaptionComponentForm(props) {
     if (props.selectedCaption !== -1) {
       const selectedCaption = props.captions[props.round].find(caption => caption.id == props.selectedCaption);
       if (selectedCaption && selectedCaption.isCorrect) {
-        props.setScore((oldscore)=> [...oldscore, 5]);
+        props.setScore((oldscore) => [...oldscore, 5]);
         props.setAnswer(true);
       } else {
-        props.setScore((oldscore)=> [...oldscore, 0]);
+        props.setScore((oldscore) => [...oldscore, 0]);
         props.setAnswer(false);
       }
     } else {
-      props.setScore((oldscore)=> [...oldscore, 0]);
+      props.setScore((oldscore) => [...oldscore, 0]);
       props.setAnswer(false);
     }
-      props.setChoices([...props.choices, props.selectedCaption]);
-      props.setEndRound(true);
+    props.setChoices([...props.choices, props.selectedCaption]);
+    props.setEndRound(true);
   };
 
   useEffect(() => {
     if (props.timeLeft === 0) {
-        props.setEndRound(true);
+      props.setEndRound(true);
       return;
     }
 
@@ -456,17 +464,6 @@ function MemeComponent() {
 }
 
 function GameRoute() {
-  const context = useContext(AppContext);
-  const loadingState = context.loadingState;
-
-  if (loadingState.loading) {
-    return (
-      <Container className="my-5 text-center">
-        <Spinner variant="primary" />
-      </Container>
-    );
-  }
-
   return (
     <>
       <MyNavbar />

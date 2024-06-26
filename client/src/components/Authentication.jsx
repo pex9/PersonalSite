@@ -14,14 +14,12 @@ function LoginForm(props) {
     const navigate = useNavigate();
     const context = useContext(AppContext);
     const loginState = context.loginState;
-    const loadingState = context.loadingState;
 
     function doLogIn(credentials) {
         API.login(credentials)
             .then(user => {
                 setErrMsg('');
                 loginState.loginSuccessful(user);
-                //loadingState.updateLoading(true);
                 navigate('/');
             })
             .catch(err => {
@@ -64,9 +62,7 @@ function LoginForm(props) {
                                         </FloatingLabel>
                                         <Button type='submit' className='my-2 rounded-pill'>Login</Button>
                                         <Button className='mx-3 rounded-pill' variant='danger' onClick={() => {
-                                            loadingState.updateLoading(true);
                                             navigate('/');
-                                            loadingState.updateLoading(false);
                                         }} >Cancel</Button>
                                     </Form>
                                 </Card.Body>
