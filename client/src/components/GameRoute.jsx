@@ -131,7 +131,7 @@ function MessageComponent(props) {
   const loginState = context.loginState;
   props.choices[props.choices.length - 1]
   const handleNextTurn = () => {
-    props.setTimeLeft(30); // Reset the timer for the next turn
+    props.setTimeLeft(30); // risetto timer per il prossimo turno
     props.setEndRound(false);
     if (loginState.loggedIn) {
       if (props.round < 3) {
@@ -337,7 +337,6 @@ function MemeComponent() {
     setChoices([]);
     setEndRound(false);
     setTimeLeft(30);
-    setListMeme
     const shuffledListMeme = listmeme.slice().sort(() => Math.random() - 0.5);
     setListMeme(shuffledListMeme);
 
@@ -349,7 +348,7 @@ function MemeComponent() {
 
   const handleSaveGame = async () => {
 
-    const creationDate = dayjs().format('YYYY-MM-DD');
+    const creationDate = dayjs().format('YYYY-MM-DD HH:mm');
     const gamescore = [...score].join(","); // prendo il risultato precedente
     try {
       const response = await API.saveGame(gamescore, creationDate, listmeme.slice(1, 4).map(meme => meme.url).join(','));

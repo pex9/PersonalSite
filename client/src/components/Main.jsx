@@ -13,11 +13,9 @@ function Description({ startGame }) {
                     Sia l’immagine del meme che le didascalie devono essere generate dal server. Tra le sette didascalie, due di esse
                     devono essere tra quelle che meglio si adattano a quel meme. Il giocatore deve selezionare una didascalia che meglio
                     si adatta al meme entro 30 secondi. Se il giocatore seleziona una delle due didascalie più appropriate per il meme entro
-                    30 secondi, ottiene 5 punti e l’applicazione mostra un messaggio che segnala la fine del round. Se il giocatore seleziona
-                    una delle altre didascalie o il tempo scade, ottiene 0 punti. In questo caso, l'applicazione mostra un messaggio adeguato
-                    insieme alle due didascalie che sono le migliori per il meme dato.
+                    30 secondi, ottiene 5 punti altrimenti, se seleziona una delle altre didascalie o il tempo scade, ottiene 0 punti.
                 </p>
-                <Button onClick={startGame} variant="danger">
+                <Button onClick={startGame} variant="info">
                     INIZIA GIOCO
                 </Button>
             </Col>

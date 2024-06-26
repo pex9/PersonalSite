@@ -8,8 +8,10 @@
 - Route `/history`: pagina dedicata per accedere allo storico delle partite di un utente,accessibile solo dagli utenti autenticati
 - Route `/viewgame/:gameid`: pagina dedicata all'accesso a una partita dell'utente nel suo storico, accessibile da utente autenticati
 - Route `/game/`: pagina dedicata alla partita dell'utente, accessibile da qualsiasi utente
+- Route `/profile`:  pagina dedicata al mostrare le informazioni del profile utente con la possibilita di accedere nella history
 - Route `/login`:  pagina contenente il form per l'autenticazione
 - Route `/*`: default route per le route inesistenti (contiene pulsante per ritornare alla pagina principale)
+
 
 ## API Server
 
@@ -84,7 +86,7 @@
   ```json
   {
       "score": "5,0,0",
-      "date": "2024-06-20",
+      "date": "2024-06-20 10:00",
       "listmeme": "meme1.jpg,meme2.jpg,meme3.jpg"
   }
   ```
@@ -100,13 +102,13 @@
           "id": 1,
           "user_id": 1,
           "score": "5,0,5",
-          "created_at": "2024-06-20"
+          "created_at": "2024-06-20 10:00"
       },
       {
           "id": 2,
           "user_id": 1,
           "score": "5,5,5",
-          "created_at": "2024-06-20"
+          "created_at": "2024-06-20 11:00"
       }
   ]
   ```
@@ -120,7 +122,7 @@
       "id": 1,
       "user_id": 1,
       "score": "5,0,5",
-      "created_at": "2024-06-20"
+      "created_at": "2024-06-20 10:00"
   }
   ```
 

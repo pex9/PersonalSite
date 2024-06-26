@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import { useNavigate } from 'react-router-dom'; 
 import API from '../API';
 import AppContext from '../AppContext';
-import MyNavbar from './Navbar';
+import MyNavbar from './MyNavbar';
 
 
 function LoginForm(props) {

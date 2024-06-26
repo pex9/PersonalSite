@@ -11,7 +11,7 @@ function MyProfileComp(props) {
         <Card className="text-center shadow" style={{ width: '100%', maxWidth: '400px', margin: 'auto',height: '100%' }}>
             <Card.Body>
                 <Card.Title>Utente</Card.Title>
-                <Card.Text><strong>Username:</strong> {props.user.username}</Card.Text>
+                <Card.Text><strong>Email:</strong> {props.user.username}</Card.Text>
                 <Card.Text><strong>Name:</strong> {props.user.name}</Card.Text>
             </Card.Body>
         </Card>

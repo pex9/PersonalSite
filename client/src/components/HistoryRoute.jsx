@@ -4,7 +4,7 @@ import { Container, Spinner, Button, Row, Col } from "react-bootstrap";
 import Table from 'react-bootstrap/Table';
 import AppContext from "../AppContext";
 import ErrorView from "./Error";
-import MyNavbar from "./Navbar";
+import MyNavbar from './MyNavbar';
 import API from "../API";
 import dayjs from 'dayjs';
 
@@ -34,7 +34,6 @@ function MyHistoryTable(props) {
 
   return (
     <Container>
-
       <h1>Storico</h1>
       <Row>
         <Col>
@@ -43,7 +42,10 @@ function MyHistoryTable(props) {
           </Button>
         </Col>
       </Row>
-      <Table striped bordered hover className='m-4'>
+      {sortedgames.length === 0 ? (
+        <h2>Non ci sono ancora partite registrate per questo utente.</h2>
+      ) : (
+        <Table striped bordered hover className='m-4'>
         <thead className="text-center" >
           <tr>
             <th>
@@ -61,7 +63,7 @@ function MyHistoryTable(props) {
         <tbody className="text-center">
           {sortedgames.map((game) => (
             <tr key={game.id}>
-              <td>{dayjs(game.created_at).format('MMMM D, YYYY')}</td>
+              <td>{dayjs(game.created_at).format('MMMM D, YYYY HH:mm')}</td>
               <td>{game.score.split(',').map(Number).reduce((acc, score) => acc + score, 0)}</td>
               <td>
                 <Button variant='primary' className='rounded-circle' onClick={() => {
@@ -74,6 +76,8 @@ function MyHistoryTable(props) {
           ))}
         </tbody>
       </Table>
+      )}
+     
     </Container>
   );
 }
