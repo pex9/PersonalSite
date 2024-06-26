@@ -68,7 +68,6 @@ function ViewGameRoute(props) {
                             </Button>
                         </Col>
                     </Row>
-                    
                         {listmeme ? (
                             listmeme.map((meme, index) => (
                                 <Row key={index+1} style={{ padding: '1rem' }}>

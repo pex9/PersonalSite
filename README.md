@@ -147,7 +147,7 @@
 
 ## Main React Components
 
-- `MyNavbar` (in `Navbar.jsx`): rappresenta la Navbar che viene mostrata in ogni schermata, contiene il nome del sito e la possibilita di fare il login, se loggato vi è la possibilita di accedere alla history di quel utente
+- `MyNavbar` (in `Navbar.jsx`): rappresenta la Navbar che viene mostrata in ogni schermata, contiene il nome del sito e la possibilita di fare il login, se loggato vi è la possibilita di accedere alla pagina profilo di quel utente
 - `DefaultRoute` (in `DefaultRoute.jsx`): rappresenta la default route, contiene un pulsante per ritornare alla schermata principale 
 - `MyMain` (in `Main.jsx`): componente utilizzato per presentare le regole all'utente con la possibilita di iniziare una partita  
 - `LoginRoute` (in `Authentication.jsx`): rappresenta la schermata contenente il form per l'autenticazione
@@ -155,6 +155,7 @@
 - `GameRoute` (in `GameRoute.jsx`): rappresenta la schermata di gioco con la possibita di selezionare un didascalia adatta all'immagine e riepilogo
 - `HistoryRoute` (in `HistoryRoute.jsx`): rappresenta la generale dello storico delle partite dell'utente con la possibilita di visualizzare in dettaglio una partita.
 - `ViewGameRoute` (in `ViewGameRoute.jsx`): rappresenta la schermata riferita a una partita dello storico con dettagli di meme e punteggi associati.
+- `ProfileRoute` (in `ProfileRoute.jsx`): rappresenta la schermata riferita alla schermata utente in cui viene mostrato le informazioni dell'utente piu la possibilita dello storico con dettagli di meme e punteggi associati.
 
 ## Screenshot
 

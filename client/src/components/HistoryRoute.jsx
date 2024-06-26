@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useContext} from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Spinner,Button } from "react-bootstrap";
+import { Container, Spinner, Button, Row, Col } from "react-bootstrap";
 import Table from 'react-bootstrap/Table';
 import AppContext from "../AppContext";
 import ErrorView from "./Error";
@@ -28,11 +28,23 @@ function MyHistoryTable(props) {
     });
   }
 
+  const handleBack = () => {
+    navigate(-1); // Go back to the previous page
+  };
+
   return (
     <Container>
+
       <h1>Storico</h1>
-      <Table striped bordered hover>
-        <thead className="text-center">
+      <Row>
+        <Col>
+          <Button variant="danger" onClick={handleBack}>
+            Indietro
+          </Button>
+        </Col>
+      </Row>
+      <Table striped bordered hover className='m-4'>
+        <thead className="text-center" >
           <tr>
             <th>
               Data partita
@@ -52,8 +64,8 @@ function MyHistoryTable(props) {
               <td>{dayjs(game.created_at).format('MMMM D, YYYY')}</td>
               <td>{game.score.split(',').map(Number).reduce((acc, score) => acc + score, 0)}</td>
               <td>
-                <Button variant='primary' className='rounded-circle' onClick={() => { 
-                  navigate(`/viewgame/${game.id}`); 
+                <Button variant='primary' className='rounded-circle' onClick={() => {
+                  navigate(`/viewgame/${game.id}`);
                 }}>
                   <i className="bi bi-eye" />
                 </Button>
@@ -90,19 +102,19 @@ function HistoryRoute(props) {
 
   return (
     <>
-      {handleErrorState.errMsg ? 
-        <ErrorView /> : 
+      {handleErrorState.errMsg ?
+        <ErrorView /> :
         <>
-          {loadingState.loading ? 
+          {loadingState.loading ?
             <Container className='my-5 text-center'> <Spinner animation="border" variant='primary' /> </Container> :
             <>
               <MyNavbar type={props.type} />
-              <MyHistoryTable history={history} /> 
+              <MyHistoryTable history={history} />
             </>
           }
         </>
       }
-    </>    
+    </>
   );
 }
 

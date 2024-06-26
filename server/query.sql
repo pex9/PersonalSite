@@ -1,8 +1,1 @@
-
-CREATE TABLE users (
-    id INTEGER PRIMARY KEY,
-    name TEXT NOT NULL,
-    email TEXT NOT NULL UNIQUE,
-    hash TEXT NOT NULL,
-    salt TEXT NOT NULL
-);
+select * from didascalie;
