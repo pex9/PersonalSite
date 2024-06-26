@@ -82,7 +82,6 @@ exports.getGames = (userId) => {
 exports.getGame = (gameId, userId) => {
   return new Promise((resolve, reject) => {
     const query = 'SELECT * FROM partite WHERE id = ? AND user_id = ?';
-    console.log(query);
     db.get(query, [gameId, userId], (err, row) => {
       if (err) {
         reject(err);
@@ -92,11 +91,11 @@ exports.getGame = (gameId, userId) => {
     });
   });
 };
-// Function to shuffle an array using Fisher-Yates algorithm
+// funzione per mescolare un array
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1)); // Generate random index
-    [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+    const j = Math.floor(Math.random() * (i + 1)); // genera un indice casuale
+    [array[i], array[j]] = [array[j], array[i]]; // scambia gli elementi
   }
   return array;
 }

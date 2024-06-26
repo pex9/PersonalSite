@@ -87,10 +87,10 @@
   {
       "score": "5,0,0",
       "date": "2024-06-20 10:00",
-      "listmeme": "meme1.jpg,meme2.jpg,meme3.jpg"
+      "listmeme": "meme1.jpg,meme8.jpg,meme3.jpg"
   }
   ```
-  - Response: restituisce `200 OK` (successo), `400 Bad Request` (dati mancanti o non validi), `401 Unauthorized` (utente non autenticato) o `500 Internal Server Error` (errore generico). In caso di successo il body è vuoto.
+  - Response: restituisce `200 OK` (successo), `422 Unprocessable Entity` (dati mancanti o non validi), `401 Unauthorized` (utente non autenticato) o `500 Internal Server Error` (errore generico). In caso di successo il body è vuoto.
 
 - GET `/api/games`
   - Descrizione: Autenticata,Restituisce le partite salvate dall'utente

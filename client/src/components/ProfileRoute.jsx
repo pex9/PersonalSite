@@ -41,7 +41,6 @@ function ProfileRoute(props) {
     const context = useContext(AppContext);
     const loadingState = context.loadingState;
     const handleErrorState = context.handleErrorState;
-    console.log(context.loginState);
     return (
         <>
             {handleErrorState.errMsg ?

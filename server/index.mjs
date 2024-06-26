@@ -151,7 +151,7 @@ app.post('/api/savegame', isLoggedIn,[
   const listmeme = req.body.listmeme;
   // Check if the required data is present and valid
   if (!score || !date || !listmeme) {
-    res.status(400).end();
+    res.status(422).end();
     return;
   }
   // Save the game
