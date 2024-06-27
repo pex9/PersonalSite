@@ -15,7 +15,7 @@ function ImageComponent(props) {
       <Col ></Col>
       <Card className="card-image-comp mt-3" >
         <Card.Body>
-          <Card.Title className="fw-bold">  ROUND {round}</Card.Title>
+          <Card.Title className="fw-bold"> ROUND {round}</Card.Title>
           {memeUrl ? (
             <CardImg src={url + memeUrl} alt="Meme" className="custom-card-img" />
           ) : (
@@ -166,8 +166,6 @@ function MessageComponent(props) {
       return "Nuova partita";
     }
   };
-
-
   correct_answer = props.captions[props.round].filter((caption) => caption.isCorrect);
   const responseClass = correct_answer.some(answer => answer.text === previoustext) ? 'correct' : 'incorrect';
   const text = correct_answer.some(answer => answer.text === previoustext) ? 'Risposta corretta ' : 'Risposta sbagliata';
@@ -234,10 +232,10 @@ function CaptionComponentForm(props) {
             [props.round]: capt,
           }));
         } catch (error) {
-          console.error('Error fetching meme captions:', error);
+          props.setErrMsg('Error fetching meme captions');
         }
       } catch (error) {
-        console.error('Error fetching meme captions:', error);
+          props.setErrMsg('Error fetching meme captions');
       }
     };
 
@@ -389,6 +387,7 @@ function MemeComponent() {
     if (!endRound) {
       return (
         <Container>
+           {error ? <Alert variant='danger' dismissible onClick={() => setError('')}>{error}</Alert> : undefined}
           <Row >
             <ImageComponent listmeme={listmeme} error={error} round={round} />
           </Row>
@@ -404,6 +403,8 @@ function MemeComponent() {
               timeLeft={timeLeft}
               setTimeLeft={setTimeLeft}
               exitGame={exitGame}
+              error={error}
+              setError={setError}
               handleSaveGame={handleSaveGame}
               setScore={setScore}
               score={score}
