@@ -34,7 +34,8 @@
 - GET `/api/sessions/current`
   - Descrizione: Autenticata, verifica che la sessione corrente è ancora valida e restituisce le informazioni dell'utente autenticato
   - Request: Nessun body
-  - Response: restituisce `200 OK` (successo) o `401 Unauthorized` (utente non autenticato). In caso di successo il body contiente un oggetto con all'interno le informazioni dell'utente associato alla sessione corrente (Content-Type: `application/json`)
+  - Response: restituisce `200 OK` (successo) o `401 Unauthorized` (utente non autenticato). 
+  - Response body: In caso di successo il body contiente un oggetto con all'interno le informazioni dell'utente associato alla sessione corrente (Content-Type: `application/json`)
   ```
   {
       "id": 2,
@@ -47,7 +48,8 @@
 - GET `/api/images`
   - Descrizione: Restituisce le immagini disponibili per il gioco
   - Request: Nessun body
-  - Response: restituisce `200 OK` (successo) o `500 Internal Server Error` (errore generico). In caso di successo il body contiene un array di oggetti con le informazioni delle immagini disponibili (Content-Type: `application/json`)
+  - Response: restituisce `200 OK` (successo) o `500 Internal Server Error` (errore generico). 
+  - Response body: In caso di successo il body contiene un array di oggetti con le informazioni delle immagini disponibili (Content-Type: `application/json`)
   ```json
   [
       {
@@ -62,20 +64,23 @@
   ```
 
 - GET `/api/captions/:memeid`
-  - Descrizione: Restituisce le didascalie associate a un meme specifico
+  - Descrizione: Restituisce 7 didasciale in totale : 2 didascalie a un meme specifico e le restanti 5 proviente da altri meme
   - Request: Nessun body, è presente il parametro `memeid` che rappresenta l'id del meme in cui sono richieste le didascalie
-  - Response: restituisce `200 OK` (successo) o `500 Internal Server Error` (errore generico). In caso di successo il body contiene un array di oggetti con le informazioni delle didascalie associate al meme (Content-Type: `application/json`)
+  - Response: restituisce `200 OK` (successo) o `500 Internal Server Error` (errore generico). 
+  - Response body: In caso di successo il body contiene un array di oggetti con le informazioni delle didascalie associate al meme (Content-Type: `application/json`)
   ```json
   [
       {
           "id": 1,
           "meme_id": 1,
-          "text": "xxx..."
+          "text": "xxx...",
+          "isCorrect": true 
       },
       {
           "id": 2,
-          "meme_id": 1,
-          "text": "xxx..."
+          "meme_id": 2,
+          "text": "xxx...",
+          "isCorrect" : false 
       }
   ]
   ```
@@ -90,12 +95,22 @@
       "listmeme": "meme1.jpg,meme8.jpg,meme3.jpg"
   }
   ```
-  - Response: restituisce `200 OK` (successo), `422 Unprocessable Entity` (dati mancanti o non validi), `401 Unauthorized` (utente non autenticato) o `500 Internal Server Error` (errore generico). In caso di successo il body è vuoto.
-
+  - Response: restituisce `201 Created` (successo), `422 Unprocessable Entity` (dati mancanti o non validi), `401 Unauthorized` (utente non autenticato) o `500 Internal Server Error` (errore generico).
+  - Response body: In caso di successo il body l' oggett0 con le informazioni delle partita salvata dall'utente (Content-Type: `application/json`).
+      ```json
+      {
+       "id" :	41,
+       "user_id" : 1,
+       "score" :"0,0,0",
+       "created_at"	: "2024-06-27 08:33",
+       "listmeme" :	"meme8.jpg,meme9.jpg,meme2.jpg"
+      }
+      ```
 - GET `/api/games`
   - Descrizione: Autenticata,Restituisce le partite salvate dall'utente
   - Request: Nessun body
-  - Response: restituisce `200 OK` (successo) o `500 Internal Server Error` (errore generico). In caso di successo il body contiene un array di oggetti con le informazioni delle partite salvate dall'utente (Content-Type: `application/json`)
+  - Response: restituisce `200 OK` (successo) , `401 Unauthorized` (se utente non autenticato) o `500 Internal Server Error` (errore generico).
+  - Response body: In caso di successo il body contiene un array di oggetti con le informazioni delle partite salvate dall'utente (Content-Type: `application/json`)
   ```json
   [
       {
@@ -116,7 +131,8 @@
 - GET `/api/games/:id`
   - Descrizione: Autenticata,Restituisce una partita salvata dall'utente
   - Request: Nessun body,è presente il parametro `id` che rappresenta l'id del partita che si deve ritornare
-  - Response: restituisce `200 OK` (successo) o `500 Internal Server Error` (errore generico). In caso di successo il body contiene un oggetto con le informazioni della partita salvata dall'utente (Content-Type: `application/json`)
+  - Response: restituisce `200 OK` (successo) `401 Unauthorized` (se utente non autenticato) o `404 Not Found` (id non valido/non presente nel database), o `500 Internal Server Error` (errore generico). 
+  - Response body: In caso di successo il body contiene un oggetto con le informazioni della partita salvata dall'utente (Content-Type: `application/json`)
   ```json
   {
       "id": 1,
@@ -134,7 +150,7 @@
   - Tabella utilizzata per memorizzare le partite giocate dagli utenti.
   - `id`: ID della partita.
   - `user_id`: ID dell'utente che ha giocato la partita (foreign key da `users`).
-  - `score`: Punteggii di un ogni round separati da virgola ottenuti nella partita.
+  - `score`: Punteggi di un ogni round separati da virgola ottenuti nella partita.
   - `listmeme`: Nomi dei meme presenti in partita separati da virgola ottenuti nella partita.
   - `created_at`: Data e ora di inizio della partita.
 - Table `meme`: (id, image_url)
@@ -161,9 +177,11 @@
 
 ## Screenshot
 
-![Screenshot](./img/screenshot.jpg)
+![Screenshot2](./img/immagine2.png)
+![Screenshot1](./img/immagine1.png)
+
 
 ## Users Credentials
 
-- mario@test.it, pwd (nuovo utente registrato,nessuna partita registrata )
+- mario@test.it, pwd (utente registrato,nessuna partita registrata )
 - marco@test.it, pwd (utente, giocatore di 2 partite)

@@ -118,7 +118,7 @@ function getUsers() {
         .then(response => {
           if (response.ok) {
             response.json()
-              .then(game => { resolve(true); })
+              .then(game => { resolve(game); })
               .catch(() => { reject({ error: "Cannot parse server response." }) }); // Handle JSON parsing error
           } else if (response.status === 404) {
             reject({ error: "Endpoint not found" });

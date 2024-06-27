@@ -24,7 +24,6 @@ exports.getImages = () => {
   });
 };
 exports.getCaptions = (memeid) => {
-  console.log(memeid);
   return new Promise((resolve, reject) => {
     const query1 = 'SELECT * FROM didascalie WHERE meme_id = ? ORDER BY RANDOM() LIMIT 2';
     db.all(query1, [memeid], (err, rows) => {
@@ -61,7 +60,8 @@ exports.saveGame = (userId, score,date,listmeme) => {
       if (err) {
         reject(err);
       } else {
-        resolve(null);
+        //ritorn il nuovo oggetto della partita salvato appena creato
+        resolve(exports.getGame(this.lastID, userId));
       }
     });
   });

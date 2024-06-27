@@ -11,7 +11,7 @@ function RowMemeComponent(props) {
   const { imageurl, round, score } = props;
 
   return (
-    <Card>
+    <Card >
       <Row>
         <Col md={3}>
           <Card.Img src={imageurl} />
@@ -31,7 +31,7 @@ function ViewGameRoute(props) {
   const navigate = useNavigate();
   const [game, setGame] = useState(null);
   const [listmeme, setListmeme] = useState(null);
-  const [localHistoryLoading, setLocalHistoryLoading] = useState(true); // inizia il caricamento della partita che si sta visualizzando
+  const [localGameLoading, setLocalGameLoading] = useState(true); // inizia il caricamento della partita che si sta visualizzando
 
   const { gameid } = useParams(); // permette di ottenere i parametri dall'url tramite params
 
@@ -46,9 +46,9 @@ function ViewGameRoute(props) {
         const viewgame = await API.getGame(gameid);
         setGame(viewgame);
         setListmeme(viewgame.listmeme.split(","));
-        setLocalHistoryLoading(false); // fine del caricamento
+        setLocalGameLoading(false); // fine del caricamento
       } catch (err) {
-        console.error(err);
+        setLocalGameLoading(false); // fine del caricamento
       }
     }
     fetchGame();
@@ -56,7 +56,7 @@ function ViewGameRoute(props) {
 
   return (
     <>
-      {localHistoryLoading ? (
+      {localGameLoading ? (
         <Container className="my-5 text-center">
           <Spinner animation="border" variant="primary" />
         </Container>
