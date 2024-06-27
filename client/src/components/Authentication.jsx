@@ -7,6 +7,7 @@ import MyNavbar from './MyNavbar';
 
 
 function LoginForm(props) {
+    // stato per username e password
     const [username, setUsername] = useState('mario@test.it');
     const [password, setPassword] = useState('pwd');
     const [errMsg, setErrMsg] = useState('');

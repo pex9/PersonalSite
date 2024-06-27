@@ -3,7 +3,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import './App.css'
 import React, { useState, useEffect } from 'react'
 import AppContext from './AppContext'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import LoginRoute from './components/Authentication';
 import DefaultRoute from './components/DefaultRoute';
 import HomeRoute from './components/HomeRoute';
@@ -13,11 +13,10 @@ import ViewGameRoute from './components/ViewGameRoute';
 import ProfileRoute from './components/ProfileRoute';
 import API from './API';
 function App() {
-
+  // stato per tenere traccia dello stato di autenticazione dell'utente
   const [user, setUser] = useState(undefined);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [gamestarted, setGameStarted] = useState(false);
-
+  // controllo se l'utente è loggato
   useEffect(() => {
     async function checkAuth() {
       try {
@@ -25,7 +24,8 @@ function App() {
         setLoggedIn(true);
         setUser(user);
       } catch (err) {
-        // NO need to do anything: user is simply not yet authenticated
+        setLoggedIn(false);
+        setUser(undefined);
       }
     }
     checkAuth();
@@ -50,10 +50,6 @@ function App() {
           loggedIn: loggedIn,
           loginSuccessful: loginSuccessful,
           doLogout: doLogout
-        },
-        gamestarted: {
-          gamestarted: gamestarted,
-          setGameStarted: (value) => setGameStarted(value)
         }
       }}
       >

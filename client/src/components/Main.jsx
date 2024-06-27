@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import AppContext from '../AppContext';
 
 function Description({ startGame }) {
     return (
@@ -25,11 +24,8 @@ function Description({ startGame }) {
 
 function MyMain() {
     const navigate = useNavigate();
-    const context = useContext(AppContext);
-    const { gamestarted } = context;
 
     const startGame = () => {
-        gamestarted.setGameStarted(true);  // Imposta lo stato del gioco a iniziato
         navigate('/game');  // Naviga alla pagina del gioco
     };
 

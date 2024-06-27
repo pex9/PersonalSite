@@ -18,22 +18,10 @@
 
 }
 
-.read-the-docs {
-  color: #7c7b7b;
-}
-
 .navbar-title {
   color: white;
   text-align: center;
   flex: 1;
-}
-
-.card-custom {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
 }
 
 .form-group-custom {
@@ -60,11 +48,12 @@
   font-size: 16px;
   font-weight: 500;
 }
-.card-profile-costom{
- max-width: 400px;
- width: 100%;
- margin: 'auto';
- height: 100%;
+
+.card-profile-costom {
+  max-width: 400px;
+  width: 100%;
+  margin: 'auto';
+  height: 100%;
 }
 
 .custom-list-group-item {

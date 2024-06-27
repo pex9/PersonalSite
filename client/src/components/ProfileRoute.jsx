@@ -4,6 +4,7 @@ import { Col, Container, Button, Card, Row } from "react-bootstrap";
 import AppContext from "../AppContext";
 import MyNavbar from './MyNavbar';
 
+// componente per visualizzare il profilo dell'utente dato lo user passato come props, mostra info come email e nome
 function MyProfileComp(props) {
     return (
         <Card className="text-center shadow card-profile-costom" >
@@ -19,7 +20,7 @@ function HistoryComp() {
     const navigate = useNavigate();
 
     const handleHistoryClick = () => {
-        navigate('/history'); // Adjust the path according to your routing setup
+        navigate('/history'); // vai alla pagina di storico
     };
 
     return (

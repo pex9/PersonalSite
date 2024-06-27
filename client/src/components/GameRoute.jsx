@@ -132,7 +132,7 @@ function InfoComponent(props) {
 function MessageComponent(props) {
   const context = useContext(AppContext);
   const loginState = context.loginState;
-  props.choices[props.choices.length - 1]
+  // funzione per gestire il prossimo turno, se l'utente è loggato e il round è minore di 3 incremento il round altrimenti salvo la partita
   const handleNextTurn = () => {
     props.setTimeLeft(30); // risetto timer per il prossimo turno
     props.setEndRound(false);
@@ -144,19 +144,20 @@ function MessageComponent(props) {
         props.setGameOver(true);
       }
     } else {
-      props.setGameOver(true);
+      props.setGameOver(true); // se non è loggato il gioco è finito visto che dura solo un round
     }
   };
 
   let previoustext = "";
   let correct_answer = [];
+  // cerco la didascalia che l'utente ha scelto per il meme avendo gli id
   for (let i = 0; i < props.captions[props.round].length; i++) {
     if (props.captions[props.round][i].id == props.choices[props.choices.length - 1]) {
       previoustext = props.captions[props.round][i].text;
       break;
     }
   }
-  const resultText = () => {
+  const resultOkText = () => {
     if (loginState.loggedIn && props.round === 3) {
       return "Riepilogo partita";
     } else if (loginState.loggedIn && props.round < 3) {
@@ -165,6 +166,8 @@ function MessageComponent(props) {
       return "Nuova partita";
     }
   };
+
+
   correct_answer = props.captions[props.round].filter((caption) => caption.isCorrect);
   const responseClass = correct_answer.some(answer => answer.text === previoustext) ? 'correct' : 'incorrect';
   const text = correct_answer.some(answer => answer.text === previoustext) ? 'Risposta corretta ' : 'Risposta sbagliata';
@@ -195,14 +198,16 @@ function MessageComponent(props) {
       <Row className="justify-content-center">
         <Col xs="auto" className="p-1">
           <Button variant="primary" onClick={loginState.loggedIn ? handleNextTurn : props.handleRetry}>
-            {resultText()}
+            {resultOkText()}
           </Button>
         </Col>
-        <Col xs="auto" className="p-1">
-          <Button variant="danger" onClick={props.exitGame}>
-            {loginState.loggedIn ? "Abbandona partita" : "Home"}
-          </Button>
-        </Col>
+        {(props.round != 3) && (
+          <Col xs="auto" className="p-1">
+            <Button variant="danger" onClick={props.exitGame}>
+              {loginState.loggedIn ? "Abbandona partita" : "Home"}
+            </Button>
+          </Col>
+        )}
       </Row>
     </Container>
   );
@@ -210,13 +215,14 @@ function MessageComponent(props) {
 function CaptionComponentForm(props) {
 
   const memeid = props.listmeme && props.listmeme[props.round] ? props.listmeme[props.round].id : null;
+  // se il meme cambia azzero la didascalia selezionata visto che utente non ha confermato nessuna scelta di conseguenza non ha scelta nessuna 
   useEffect(() => {
     if (props.captions.length > 0) {
       props.setSelectedCaption(-1);
     }
   }, [props.captions]);
 
-  //prima volta che entri qua dentro fetchi anche i possibili didiscalie
+  //preleva le didascalie per il meme preesente
   useEffect(() => {
     if (!memeid) {
       return;
@@ -224,8 +230,8 @@ function CaptionComponentForm(props) {
     const fetchMemeCaptions = async () => {
       try {
         try {
-          const capt = await API.getCaptions(memeid); // Assuming getCaptions fetches captions for a meme id
-          //devo andare inserire le domande fetchate dentro le captions
+          const capt = await API.getCaptions(memeid); // fetcha le didascalie per il meme
+          //aggiorno lo stato delle didascalie per il meme scelto
           props.setCaptions((prevCaptions) => ({
             ...prevCaptions,
             [props.round]: capt,
@@ -238,45 +244,42 @@ function CaptionComponentForm(props) {
       }
     };
 
-    fetchMemeCaptions(); // Call the async function to fetch captions when component mounts
-  }, [memeid]); // Dependency array ensures useEffect runs whenever memeid changes
+    fetchMemeCaptions(); // chiamo la funzione 
+  }, [memeid]); // se cambia il meme id fetcho le didascalie nella useEffect per ottenere le didascalie associate
 
 
   const handleCaptionChange = (event) => {
     props.setSelectedCaption(event.target.value);
   };
-
+  // funzione per gestire la conferma della didascalia scelta dall'utente con controllo che la didascalia sia corretta(incremento score +5 ) o meno (nessun incremento score)
   const handleSubmit = (event) => {
     event.preventDefault();
     if (props.selectedCaption !== -1) {
       const selectedCaption = props.captions[props.round].find(caption => caption.id == props.selectedCaption);
       if (selectedCaption && selectedCaption.isCorrect) {
         props.setScore((oldscore) => [...oldscore, 5]);
-        props.setAnswer(true);
       } else {
         props.setScore((oldscore) => [...oldscore, 0]);
-        props.setAnswer(false);
       }
     } else {
       props.setScore((oldscore) => [...oldscore, 0]);
-      props.setAnswer(false);
     }
     props.setChoices([...props.choices, props.selectedCaption]);
     props.setEndRound(true);
   };
 
+  // useEffect per gestire il timer del gioco, se counter arriva a 0 il round è finito e la Didascalia non è stata scelta dall'utente in quanto non ha confermato la scelta
   useEffect(() => {
     if (props.timeLeft === 0) {
       props.setEndRound(true);
       return;
     }
-
     const intervalId = setInterval(() => {
       props.setTimeLeft(prevTimeLeft => prevTimeLeft - 1);
     }, 1000);
-
     return () => clearInterval(intervalId);
   }, [props.timeLeft]);
+
   const captionsForRound = props.captions[props.round] || [];
   return (
     <Container>
@@ -319,27 +322,20 @@ function CaptionComponentForm(props) {
 }
 
 function MemeComponent() {
-  const [memeImage, setMemeImage] = useState(null);
   const [error, setError] = useState(null);
-  // per problemi di use effect duplicata ho dovuto prelevare tutti i meme in una lista e poi prelevare i meme uno alla volta
-  const [listmeme, setListMeme] = useState([]);
-  const [round, setRound] = useState(1);
-  const [captions, setCaptions] = useState({});
-  const [selectedCaption, setSelectedCaption] = useState(-1);
-  const [choices, setChoices] = useState([]);
-  const [score, setScore] = useState([]);
-  const [answer, setAnswer] = useState(false);
-  const [gameOver, setGameOver] = useState(false);
-  const [endRound, setEndRound] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(30);
-  const [answers, setAnswers] = useState({});
-
-
-  const context = useContext(AppContext);
-  const loginState = context.loginState;
+  const [listmeme, setListMeme] = useState([]); // lista dei meme correttamente presi dal server
+  const [round, setRound] = useState(1); //stato per tenere conto del round corrente del gioco
+  const [captions, setCaptions] = useState({}); // stato per tenere traccia delle didascalie per ogni meme assiociato
+  const [selectedCaption, setSelectedCaption] = useState(-1); // stato per tenere traccia della didascalia selezionata dall'utente per il meme corrente
+  const [choices, setChoices] = useState([]); // stato per tenere traccia delle scelte fatte dall'utente per ogni round
+  const [score, setScore] = useState([]); // stato per tenere traccia del punteggio ottenuto dall'utente per ogni round nella forma 5,0,5
+  const [gameOver, setGameOver] = useState(false); // stato per tenere traccia se il gioco è finito, valorizzato quando utente ha terminato tutti i round
+  const [endRound, setEndRound] = useState(false); // stato per tenere traccia se il round è finito
+  const [timeLeft, setTimeLeft] = useState(30); // stato per tenere traccia del tempo rimanente per ogni round e aggiornato dalla use effect
 
   const navigate = useNavigate();
 
+  // funzione per ricominciare il gioco, che azzera tutti gli stati e rimescola i meme per avere un nuovo gioco
   const handleRetry = () => {
     setScore([]);
     setGameOver(false);
@@ -352,10 +348,12 @@ function MemeComponent() {
 
   };
 
+  // funzione per uscire dal gioco e tornare alla home
   const exitGame = () => {
     navigate("/");
   };
 
+  // funzione per salvare il gioco, che invia al server il punteggio ottenuto e la data di creazione del gioco 
   const handleSaveGame = async () => {
 
     const creationDate = dayjs().format('YYYY-MM-DD HH:mm');
@@ -372,7 +370,7 @@ function MemeComponent() {
     }
   };
 
-
+  // fetch dei meme all'avvio del componente per avere i meme da mostrare all'utente
   useEffect(() => {
     try {
       const fetchMemeImages = async () => {
@@ -413,7 +411,6 @@ function MemeComponent() {
               handleSaveGame={handleSaveGame}
               setScore={setScore}
               score={score}
-              setAnswer={setAnswer}
               listmeme={listmeme}
               round={round}
               setEndRound={setEndRound}
@@ -441,7 +438,6 @@ function MemeComponent() {
             error={error}
             exitGame={exitGame}
             handleSaveGame={handleSaveGame}
-            answer={answer}
           />
         </Container>
       );
@@ -449,7 +445,6 @@ function MemeComponent() {
   } else {
     return (
       <InfoComponent
-        answers={answers}
         listmeme={listmeme}
         score={score}
         handleRetry={handleRetry}

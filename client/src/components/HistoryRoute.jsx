@@ -6,6 +6,7 @@ import AppContext from "../AppContext";
 import MyNavbar from './MyNavbar';
 import API from "../API";
 import dayjs from 'dayjs';
+import DefaultRoute from './DefaultRoute';
 
 function MyHistoryTable(props) {
   const [sort, setSort] = useState('desc');
@@ -83,15 +84,18 @@ function MyHistoryTable(props) {
 
 function HistoryRoute(props) {
   const [history, setHistory] = useState([]);
+  const [localHistoryLoading, setLocalHistoryLoading] = useState(true); // inizia il caricamento
   const context = useContext(AppContext);
   const loginState = context.loginState.loggedIn;
+
   useEffect(() => {
     const fetchHistory = async () => {
       try {
         const response = await API.getGames();
         setHistory(response);
+        setLocalHistoryLoading(false);
       } catch (error) {
-        //handleErrorState.setErrMsg(error.message);
+        setLocalHistoryLoading(false);
       }
     };
 
@@ -101,9 +105,9 @@ function HistoryRoute(props) {
   return (
     <>
       {loginState == false ?
-        <ErrorView /> :
+        <DefaultRoute /> :
         <>
-          {history == null ?
+          {localHistoryLoading == true ?
             <Container className='my-5 text-center'> <Spinner animation="border" variant='primary' /> </Container> :
             <>
               <MyNavbar type={props.type} />
