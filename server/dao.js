@@ -32,7 +32,7 @@ exports.getCaptions = (memeid) => {
       } else {
         const result = rows.map((row, index) => ({
           ...row,
-          isCorrect: true // Setting isCorrect to true for the first two rows
+          isCorrect: true // imposto isCorrect a true per le didascalie corrette
         }));
 
         const query2 = 'SELECT * FROM didascalie WHERE meme_id != ? ORDER BY RANDOM() LIMIT 5';
@@ -42,11 +42,11 @@ exports.getCaptions = (memeid) => {
           } else {
             const additionalRows = rows.map((row, index) => ({
               ...row,
-              isCorrect: false // Setting isCorrect to false for the additional rows
+              isCorrect: false // imposto isCorrect a false per le didascalie sbagliate
             }));
 
             const allRows = result.concat(additionalRows);
-            resolve(shuffleArray(allRows)); // Shuffle the combined rows
+            resolve(shuffleArray(allRows)); //richiamo la funzione per mescolare l'array
           }
         });
       }

@@ -156,7 +156,7 @@ app.post('/api/savegame', isLoggedIn, [
     .catch(() => res.status(500).end());
 });
 
-// GET /api/games, funzione che fa richiesta al DAO per ottenere le partite salvate da un utente isponibile solo per utenti autenticati
+// GET /api/games, funzione che fa richiesta al DAO per ottenere le partite salvate da un utente disponibile solo per utenti autenticati
 app.get('/api/games', isLoggedIn, async (req, res) => {
   dao.getGames(req.user.id)
     .then(games => res.json(games))

@@ -222,11 +222,8 @@ function CaptionComponentForm(props) {
     }
   }, [props.captions]);
 
-  //preleva le didascalie per il meme preesente
+  //preleva le didascalie per il meme presente
   useEffect(() => {
-    if (!memeid) {
-      return;
-    }
     const fetchMemeCaptions = async () => {
       try {
         try {
@@ -377,7 +374,6 @@ function MemeComponent() {
         try {
           const images = await API.getMemeImages();
           setListMeme(images);
-
         } catch (err) {
           setError(err.message || 'Unknown error');
         }
