@@ -7,7 +7,7 @@
 - Route `/`: pagina principale, rappresenta il L'inizio del gioco con la possibilita di loggarsi nella top bar, accessibile da qualsiasi utente.
 - Route `/history`: pagina dedicata per accedere allo storico delle partite di un utente,accessibile solo dagli utenti autenticati.
 - Route `/viewgame/:gameid`: pagina dedicata all'accesso a una partita dell'utente nel suo storico, accessibile da utente autenticati.
-- Route `/game/`: pagina dedicata alla partita dell'utente, accessibile da qualsiasi utente.
+- Route `/game`: pagina dedicata alla partita dell'utente, accessibile da qualsiasi utente.
 - Route `/profile`:  pagina dedicata al mostrare le informazioni del profile utente con la possibilita di accedere nella history.
 - Route `/login`:  pagina contenente il form per l'autenticazione.
 - Route `/*`: default route per le route inesistenti (contiene pulsante per ritornare alla pagina principale).
@@ -96,7 +96,7 @@
   }
   ```
   - Response: restituisce `201 Created` (successo), `422 Unprocessable Entity` (dati mancanti o non validi), `401 Unauthorized` (utente non autenticato) o `500 Internal Server Error` (errore generico).
-  - Response body: In caso di successo il body l' oggett0 con le informazioni delle partita salvata dall'utente (Content-Type: `application/json`).
+  - Response body: In caso di successo il body l' oggetto con le informazioni delle partita salvata dall'utente (Content-Type: `application/json`).
       ```json
       {
        "id" :	41,
