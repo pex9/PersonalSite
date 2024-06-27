@@ -4,13 +4,13 @@
 
 ## React Client Application Routes
 
-- Route `/`: pagina principale, rappresenta il L'inizio del gioco con la possibilita di loggarsi nella top bar, accessibile da qualsiasi utente
-- Route `/history`: pagina dedicata per accedere allo storico delle partite di un utente,accessibile solo dagli utenti autenticati
-- Route `/viewgame/:gameid`: pagina dedicata all'accesso a una partita dell'utente nel suo storico, accessibile da utente autenticati
-- Route `/game/`: pagina dedicata alla partita dell'utente, accessibile da qualsiasi utente
-- Route `/profile`:  pagina dedicata al mostrare le informazioni del profile utente con la possibilita di accedere nella history
-- Route `/login`:  pagina contenente il form per l'autenticazione
-- Route `/*`: default route per le route inesistenti (contiene pulsante per ritornare alla pagina principale)
+- Route `/`: pagina principale, rappresenta il L'inizio del gioco con la possibilita di loggarsi nella top bar, accessibile da qualsiasi utente.
+- Route `/history`: pagina dedicata per accedere allo storico delle partite di un utente,accessibile solo dagli utenti autenticati.
+- Route `/viewgame/:gameid`: pagina dedicata all'accesso a una partita dell'utente nel suo storico, accessibile da utente autenticati.
+- Route `/game/`: pagina dedicata alla partita dell'utente, accessibile da qualsiasi utente.
+- Route `/profile`:  pagina dedicata al mostrare le informazioni del profile utente con la possibilita di accedere nella history.
+- Route `/login`:  pagina contenente il form per l'autenticazione.
+- Route `/*`: default route per le route inesistenti (contiene pulsante per ritornare alla pagina principale).
 
 
 ## API Server
@@ -144,20 +144,20 @@
 
 ## Database Tables
 
-- Table `users` : (id, name, email, hash, salt, admin)
-  - Tabella utilizzata per memorizzare le informazioni degli utenti
-- Table `partite`: (id, user_id, score, created_at)
+- Table `users` : (id, name, email, hash, salt, admin).
+  - Tabella utilizzata per memorizzare le informazioni degli utenti.
+- Table `partite`: (id, user_id, score, created_at).
   - Tabella utilizzata per memorizzare le partite giocate dagli utenti.
   - `id`: ID della partita.
   - `user_id`: ID dell'utente che ha giocato la partita (foreign key da `users`).
   - `score`: Punteggi di un ogni round separati da virgola ottenuti nella partita.
   - `listmeme`: Nomi dei meme presenti in partita separati da virgola ottenuti nella partita.
   - `created_at`: Data e ora di inizio della partita.
-- Table `meme`: (id, image_url)
+- Table `meme`: (id, image_url).
   - Tabella utilizzata per memorizzare i meme disponibili per il gioco dove le immagini sono rese disponibili dal server pubblicamente nella directory public.
   - `id`: ID del meme.
   - `image_url`: Nome dell'immagine del meme.
-- Table `didascalie`: (id, meme_id, text)
+- Table `didascalie`: (id, meme_id, text).
   - Tabella utilizzata per memorizzare le didascalie associate ai meme(una meme ha almeno 2 didascalie associate come da progetto).
   - `id`: ID della didascalia.
   - `meme_id`: ID del meme associato (foreign key da `memes`).
@@ -165,12 +165,12 @@
 
 ## Main React Components
 
-- `MyNavbar` (in `Navbar.jsx`): rappresenta la Navbar che viene mostrata in ogni schermata, contiene il nome del sito e la possibilita di fare il login, se loggato vi è la possibilita di accedere alla pagina profilo di quel utente
-- `DefaultRoute` (in `DefaultRoute.jsx`): rappresenta la default route, contiene un pulsante per ritornare alla schermata principale 
-- `MyMain` (in `Main.jsx`): componente utilizzato per presentare le regole all'utente con la possibilita di iniziare una partita  
-- `LoginRoute` (in `Authentication.jsx`): rappresenta la schermata contenente il form per l'autenticazione
-- `HistoryRoute` (in `HistoryRoute.jsx`): rappresenta la schermata contenente lo storico delle partite fatte dall'utente con data e punteggio 
-- `GameRoute` (in `GameRoute.jsx`): rappresenta la schermata di gioco con la possibita di selezionare un didascalia adatta all'immagine e riepilogo
+- `MyNavbar` (in `Navbar.jsx`): rappresenta la Navbar che viene mostrata in ogni schermata, contiene il nome del sito e la possibilita di fare il login, se loggato vi è la possibilita di accedere alla pagina profilo di quel utente.
+- `DefaultRoute` (in `DefaultRoute.jsx`): rappresenta la default route, contiene un pulsante per ritornare alla schermata principale.
+- `MyMain` (in `Main.jsx`): componente utilizzato per presentare le regole all'utente con la possibilita di iniziare una partita.  
+- `LoginRoute` (in `Authentication.jsx`): rappresenta la schermata contenente il form per l'autenticazione.
+- `HistoryRoute` (in `HistoryRoute.jsx`): rappresenta la schermata contenente lo storico delle partite fatte dall'utente con data e punteggio. 
+- `GameRoute` (in `GameRoute.jsx`): rappresenta la schermata di gioco con la possibita di selezionare un didascalia adatta all'immagine e riepilogo.
 - `HistoryRoute` (in `HistoryRoute.jsx`): rappresenta la generale dello storico delle partite dell'utente con la possibilita di visualizzare in dettaglio una partita.
 - `ViewGameRoute` (in `ViewGameRoute.jsx`): rappresenta la schermata riferita a una partita dello storico con dettagli di meme e punteggi associati.
 - `ProfileRoute` (in `ProfileRoute.jsx`): rappresenta la schermata riferita alla schermata utente in cui viene mostrato le informazioni dell'utente piu la possibilita dello storico con dettagli di meme e punteggi associati.
