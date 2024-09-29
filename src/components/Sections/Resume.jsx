@@ -4,7 +4,7 @@ import React from 'react';
 function Resume() {
     return (
         <section id="resume" className="py-20 bg-gray-100">
-            <h2 className="text-3xl text-center font-bold">Resume</h2>
+            <h2 className="text-3xl text-center font-bold">Experience</h2>
             <ul className="mt-8">
                 {/* First Experience */}
                 <li className="mb-6">

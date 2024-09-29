@@ -59,7 +59,7 @@ section {
 
 header {
   background-color: #007bff; /* Header background color */
-  padding: 15px 20px; /* Adjust padding for better spacing */
+  padding: 10px 10px; /* Adjust padding for better spacing */
   position: relative; /* Keeps the header in the document flow */
   z-index: 1000; /* Keeps the header above other content */
 }
@@ -74,7 +74,7 @@ nav {
 
 nav ul {
   display: flex; /* Horizontal layout */
-  gap: 20px; /* Space between links */
+  gap: 10px; /* Space between links */
   padding: 0; /* Remove default padding */
   margin: 0; /* Remove default margin */
   list-style: none; /* Remove bullet points */
