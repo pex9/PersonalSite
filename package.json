@@ -1,11 +1,12 @@
 {
-  "homepage": "https://pex9.github.io/site",
+  "homepage": "/site",
   "name": "client",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "start": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
