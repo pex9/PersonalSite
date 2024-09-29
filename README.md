@@ -88,6 +88,7 @@ At the end you have to run
 ```bash
 npm run deploy ## if you using yarn(another package manager ) do yarn deploy
 ```
+NB you will host your project on this url:  https://nickname.github.io/nameofrepository/ (in my case is PersonalSite, if you want to change you have also to modify the vite.config and app.js routes)
 
 
 ## License
