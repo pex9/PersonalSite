@@ -6,7 +6,9 @@ The `HomeRoute` component serves as the main entry point for the home page of th
 
 - [Installation](#installation)
 - [Component Structure](#component-structure)
+- [Screenshots](#screenshots)
 - [Docker](#docker)
+- [Github Pages](#github-pages)
 - [License](#license)
 
 ## Installation
@@ -46,6 +48,16 @@ The `HomeRoute` component is composed of several smaller, reusable components, e
 
 Each of these components can be found in the `Sections` directory, and they can be modified independently, allowing for greater flexibility and reusability throughout your application.
 
+## Screenshots
+
+Here are some screenshots of the application:
+
+![Home Page](./screenshots/homepage1.png)
+
+<br>
+
+![Home Page](./screenshots/homepage2.png)
+
 ## Docker
 First run this commando to build your image on your pc
 ```bash
@@ -57,6 +69,26 @@ docker run -p 3000:3000 my-vite-app
 ```
 Finally on Open your web browser and navigate to:
 ```http://localhost:portypuspecified/site/```
+
+## Github Pages
+
+To host your own website you have to follow some steps.
+First install on your repo:
+```bash
+npm install gh-pages --save-dev
+```
+Then you have to modify the scripts on your package json in particular set:
+```bash
+  "scripts": {
+  "predeploy": "npm run build",
+  "deploy": "gh-pages -d dist"
+  }
+```
+At the end you have to run 
+```bash
+npm run deploy ## if you using yarn(another package manager ) do yarn deploy
+```
+
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for more details.
