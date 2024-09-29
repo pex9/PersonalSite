@@ -10,7 +10,7 @@ const TextAnimation = () => {
             sequence={[
                 'Proficient in coding with ReactJS, JavaScript',
                 3000,
-                'Certainly adept in HTML, Php.',
+                'Certainly adept in HTML, Php',
                 4000,
                 () => {
                     console.log('Done typing!');

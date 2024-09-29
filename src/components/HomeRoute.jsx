@@ -7,6 +7,7 @@ import Portfolio from './Sections/Portfolio';
 import Resume from './Sections/Resume';
 import Header from './Sections/Header';
 import Education from './Sections/Education';
+import Technology from './Sections/Technology';
 
 function HomeRoute(props) {
     return (
@@ -17,6 +18,7 @@ function HomeRoute(props) {
             <Education/>
             <Resume />
             <Portfolio />
+            <Technology />
             <Footer />
         </>
     );

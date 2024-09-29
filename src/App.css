@@ -337,4 +337,15 @@ footer {
 .icon-link:hover {
   background-color: #cbd5e0; /* Darker gray on hover */
 }
+/* /styles/Technology.css */
+.tech-item {
+  background-color: #ffffff; /* Light background */
+  border-radius: 8px;
+  transition: transform 0.2s, box-shadow 0.2s; /* Add transition for shadow */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow */
+}
 
+.tech-item:hover {
+  transform: scale(1.05); /* Scale effect on hover */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
+}

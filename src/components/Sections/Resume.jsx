@@ -8,8 +8,8 @@ function Resume() {
             <ul className="mt-8">
                 {/* First Experience */}
                 <li className="mb-6">
-                    <h3 className="text-xl font-bold">CMV Group, Web Developer</h3>
-                    <p className="text-gray-600">Cuneo, Italy (March 2023 – October 2023)</p>
+                   <h3 className="text-xl font-bold">CMV Group, Web Developer</h3>
+                   <strong><p className="text-gray-600">Cuneo, Italy (March 2023 – October 2023)</p> </strong>
                     <p className="text-gray-600">
                         Analysis, design, and development of web-based applications using LAMP technology.
                     </p>
@@ -18,7 +18,7 @@ function Resume() {
                 {/* Second Experience */}
                 <li className="mb-6">
                     <h3 className="text-xl font-bold">Web Developer Intern</h3>
-                    <p className="text-gray-600">Cuneo, Italy (July 2022 – October 2022)</p>
+                    <strong><p className="text-gray-600">Cuneo, Italy (July 2022 – October 2022)</p> </strong>
                     <p className="text-gray-600">
                         Analysis, design, and development of web-based applications using LAMP technology. 
                         Server-side development (PHP) and client-side development (HTML, CSS3, JS) 
