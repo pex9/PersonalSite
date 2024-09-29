@@ -6,6 +6,7 @@ The `HomeRoute` component serves as the main entry point for the home page of th
 
 - [Installation](#installation)
 - [Component Structure](#component-structure)
+- [Docker](#docker)
 - [License](#license)
 
 ## Installation
@@ -44,5 +45,18 @@ The `HomeRoute` component is composed of several smaller, reusable components, e
   - The Footer contains copyright information, links to privacy policies, and any other relevant details that should be present at the bottom of the page. It often includes contact information or social media links.
 
 Each of these components can be found in the `Sections` directory, and they can be modified independently, allowing for greater flexibility and reusability throughout your application.
+
+## Docker
+First run this commando to build your image on your pc
+```bash
+docker build -t my-vite-app .
+```
+Then to run your container you have to specified the port to run it(standard 3000, if you want to change also change the port in vite.config.js)
+```bash
+docker run -p 3000:3000 my-vite-app
+```
+Finally on Open your web browser and navigate to:
+```http://localhost:portypuspecified/site/```
+
 ## License
 This project is licensed under the MIT License. See the LICENSE file for more details.
