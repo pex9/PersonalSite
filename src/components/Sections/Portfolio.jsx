@@ -19,7 +19,7 @@ function Portfolio() {
                             src={collaborantAnt}
                             alt="CollaborAnt, mobile application"
                             className="w-full h-full object-cover"
-                            style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                            style={{ objectFit: 'cover', width: '30%', height: '100%' }}
                         />
                     </div>
                     <h3 className="text-xl font-bold mt-4">CollaborAnt, mobile application</h3>
@@ -47,7 +47,7 @@ function Portfolio() {
                             src={backupApp}
                             alt="Emergency Backup"
                             className="w-full h-full object-cover"
-                            style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                            style={{ objectFit: 'cover', width: '30%', height: '100%' }}
                         />
                     </div>
                     <h3 className="text-xl font-bold mt-4">Emergency Backup</h3>

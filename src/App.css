@@ -57,33 +57,44 @@ section {
   border-radius: 8px;
 }
 
-/* Header Styles */
 header {
-  background-color: #007bff;
-  padding: 10px 0;
+  background-color: #007bff; /* Header background color */
+  padding: 15px 20px; /* Adjust padding for better spacing */
+  position: relative; /* Keeps the header in the document flow */
+  z-index: 1000; /* Keeps the header above other content */
 }
 
 nav {
-  max-width: 900px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
+  max-width: 900px; /* Limit the width for centering */
+  margin: 0 auto; /* Center the navigation */
+  display: flex; /* Use flexbox */
+  justify-content: center; /* Center align the nav items */
+  flex-wrap: wrap; /* Allows items to wrap on smaller screens */
 }
 
 nav ul {
-  display: flex;
-  gap: 15px;
+  display: flex; /* Horizontal layout */
+  gap: 20px; /* Space between links */
+  padding: 0; /* Remove default padding */
+  margin: 0; /* Remove default margin */
+  list-style: none; /* Remove bullet points */
+}
+
+nav ul li {
+  flex: 1; /* Allow links to grow equally */
+  text-align: center; /* Center text within each link */
 }
 
 nav ul li a {
-  color: white;
-  padding: 5px 10px;
-  transition: background 0.3s;
+  color: white; /* Link color */
+  padding: 10px 15px; /* Padding for better click area */
+  transition: background 0.3s; /* Smooth hover effect */
+  display: block; /* Makes the entire area clickable */
 }
 
 nav ul li a:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.2); /* Hover effect */
+  border-radius: 4px; /* Rounded corners on hover */
 }
 
 /* Hero Section */

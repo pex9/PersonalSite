@@ -55,7 +55,8 @@ function Technology() {
                         <img 
                             src={item.image} 
                             alt={item.title} 
-                            className="w-16 h-16 mb-2 object-contain" // Use object-contain for better scaling
+                            className="w-24 h-24 mb-2 object-contain" // Set consistent width and height
+                            style={{ objectFit: 'cover', width: '40%', height: '100%' }}
                         />
                         <h3 className="text-lg text-center">{item.title}</h3>
                     </div>
