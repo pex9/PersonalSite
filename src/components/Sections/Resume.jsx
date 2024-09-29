@@ -3,18 +3,27 @@ import React from 'react';
 
 function Resume() {
     return (
-        <section id="resume">
-            <h2>Resume</h2>
-            <ul>
-                <li>
-                    <h3>Web Developer</h3>
-                    <p>Company XYZ (2020 - Present)</p>
-                    <p>Developed web applications using React and Node.js.</p>
+        <section id="resume" className="py-20 bg-gray-100">
+            <h2 className="text-3xl text-center font-bold">Resume</h2>
+            <ul className="mt-8">
+                {/* First Experience */}
+                <li className="mb-6">
+                    <h3 className="text-xl font-bold">CMV Group, Web Developer</h3>
+                    <p className="text-gray-600">Cuneo, Italy (March 2023 – October 2023)</p>
+                    <p className="text-gray-600">
+                        Analysis, design, and development of web-based applications using LAMP technology.
+                    </p>
                 </li>
-                <li>
-                    <h3>Frontend Developer</h3>
-                    <p>Company ABC (2018 - 2020)</p>
-                    <p>Worked on various frontend projects using HTML, CSS, and JavaScript.</p>
+
+                {/* Second Experience */}
+                <li className="mb-6">
+                    <h3 className="text-xl font-bold">Web Developer Intern</h3>
+                    <p className="text-gray-600">Cuneo, Italy (July 2022 – October 2022)</p>
+                    <p className="text-gray-600">
+                        Analysis, design, and development of web-based applications using LAMP technology. 
+                        Server-side development (PHP) and client-side development (HTML, CSS3, JS) 
+                        with database connection (MySQL) and creation of queries in SQL language.
+                    </p>
                 </li>
             </ul>
         </section>

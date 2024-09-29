@@ -13,7 +13,7 @@ function Hero() {
             <div className='lg:flex-row text-left bg-black w-4/5 p-2 rounded-lg'>
                 <div className='text-stone-300'><TextAnimation/></div>
             </div>
-            <button onClick={() => window.scrollTo(0, document.getElementById("about").offsetTop)}>Learn More</button>
+
         </section>
     );
 }
