@@ -10,20 +10,7 @@
 }
 
 /* styles.css */
-.about-links {
-  margin-top: 2rem; /* Space above links */
-}
-.icon-link {
-  display: flex; /* Flexbox for icon link */
-  align-items: center; /* Center align icon and text */
-  justify-content: center; /* Center align content */
-  background-color: #e2e8f0; /* Light gray background */
-  border-radius: 0.375rem; /* Rounded corners */
-  padding: 0.5rem; /* Padding for links */
-  color: #2d3748; /* Dark text color */
-  text-decoration: none; /* Remove underline */
-  transition: background-color 0.2s; /* Smooth background color transition */
-}
+
 /* General Styles */
 body {
   font-family: Arial, sans-serif;
@@ -319,33 +306,22 @@ footer {
 }
 /* Styles for social links */
 .about-links {
-  margin-top: 2rem; /* Space above links */
+    margin-top: 2rem; /* Space above links */
 }
 
 .icon-link {
-  display: flex; /* Flexbox for icon link */
-  align-items: center; /* Center align icon and text */
-  justify-content: center; /* Center align content */
-  background-color: #e2e8f0; /* Light gray background */
-  border-radius: 0.375rem; /* Rounded corners */
-  padding: 0.5rem; /* Padding for links */
-  color: #2d3748; /* Dark text color */
-  text-decoration: none; /* Remove underline */
-  transition: background-color 0.2s; /* Smooth background color transition */
+    display: flex; /* Flexbox for icon link */
+    align-items: center; /* Center align icon and text */
+    justify-content: center; /* Center align content */
+    background-color: #e2e8f0; /* Light gray background */
+    border-radius: 0.375rem; /* Rounded corners */
+    padding: 0.5rem; /* Padding for links */
+    color: #2d3748; /* Dark text color */
+    text-decoration: none; /* Remove underline */
+    transition: background-color 0.2s; /* Smooth background color transition */
 }
 
 .icon-link:hover {
-  background-color: #cbd5e0; /* Darker gray on hover */
-}
-/* /styles/Technology.css */
-.tech-item {
-  background-color: #ffffff; /* Light background */
-  border-radius: 8px;
-  transition: transform 0.2s, box-shadow 0.2s; /* Add transition for shadow */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow */
+    background-color: #cbd5e0; /* Darker gray on hover */
 }
 
-.tech-item:hover {
-  transform: scale(1.05); /* Scale effect on hover */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
-}
