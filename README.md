@@ -9,6 +9,7 @@ The `HomeRoute` component serves as the main entry point for the home page of th
 - [Screenshots](#screenshots)
 - [Docker](#docker)
 - [Github Pages](#github-pages)
+- [Kubernetes Deployment](#kubernetes-deployment)
 - [License](#license)
 
 ## Installation
@@ -90,6 +91,88 @@ npm run deploy ## if you using yarn(another package manager ) do yarn deploy
 ```
 NB you will host your project on this url:  https://nickname.github.io/nameofrepository/ (in my case is PersonalSite, if you want to change you have also to modify the vite.config and app.js routes)
 
+## Kubernetes Deployment
+To deploy your application on Kubernetes, follow these steps:
+
+### Push Docker Image to Docker Hub
+
+1. **Login to Docker Hub**:
+  ```bash
+  docker login
+  ```
+
+2. **Tag your Docker image**:
+  ```bash
+  docker tag my-vite-app your-dockerhub-username/my-vite-app:latest
+  ```
+
+3. **Push the image to Docker Hub**:
+  ```bash
+  docker push your-dockerhub-username/my-vite-app:latest
+  ```
+
+### Create Kubernetes Deployment and Service
+
+1. **Create a Deployment file (`deployment.yaml`)**:
+  ```yaml
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: my-vite-app-deployment
+  spec:
+    replicas: 3
+    selector:
+    matchLabels:
+      app: my-vite-app
+    template:
+    metadata:
+      labels:
+      app: my-vite-app
+    spec:
+      containers:
+      - name: my-vite-app
+      image: your-dockerhub-username/my-vite-app:latest
+      ports:
+      - containerPort: 3000
+  ```
+
+2. **Create a Service file (`service.yaml`)**:
+  ```yaml
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: my-vite-app-service
+  spec:
+    selector:
+    app: my-vite-app
+    ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+    type: LoadBalancer
+  ```
+
+### Deploy to Kubernetes
+
+1. **Apply the Deployment**:
+  ```bash
+  kubectl apply -f deployment.yaml
+  ```
+
+2. **Apply the Service**:
+  ```bash
+  kubectl apply -f service.yaml
+  ```
+
+3. **Check the status of your service**:
+  ```bash
+  kubectl get services
+  ```
+
+Once the service is up and running, you can access your application via the external IP provided by the LoadBalancer.
+```bash
+minikube service react-app-service --url
+  ```
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for more details.
