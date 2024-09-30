@@ -19,7 +19,7 @@ function About() {
             {/* CV Download Button */}
             <div className="mt-6 about-item">
                     <a 
-                        href="https://www.linkedin.com/in/davide-pellegrino-53609a221/overlay/1726840485299/single-media-viewer/?profileId=ACoAADe4L3oBPuoJYBt6r8D0Tqrop7n1RqjBDdA"
+                        href="https://www.linkedin.com/in/davide-pellegrino-53609a221/overlay/1727703096694/single-media-viewer/?profileId=ACoAADe4L3oBPuoJYBt6r8D0Tqrop7n1RqjBDdA"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="bg-blue-600 text py-2 px-4 rounded hover:bg-blue-700 transition duration-300 flex items-center justify-center w-full space-x-2"
