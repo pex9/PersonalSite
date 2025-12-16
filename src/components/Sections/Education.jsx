@@ -10,7 +10,7 @@ function Education() {
                 <li className="mb-6">
                     <h3 className="text-xl font-bold">M.Sc in Computer Engineering</h3>
                     <p className="text-gray-600">Politecnico di Torino (Sept 2023 – July 2025)</p>
-                    <p className="text-gray-600"></p> {/* Additional content can be added here */}
+                    <p className="text-gray-600">GPA: 110L/110</p> {/* Additional content can be added here */}
                 </li>
 
                 {/* Second Education Entry */}
